@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carwise — Find Trusted Auto Body Repair</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0A7FC4;
+    --blue-dark: #065A8C;
+    --blue-light: #E8F4FC;
+    --orange: #F47B20;
+    --orange-light: #FFF0E6;
+    --slate: #1A2233;
+    --slate-mid: #3D4F6B;
+    --slate-light: #8898AA;
+    --white: #FFFFFF;
+    --off-white: #F7F9FC;
+    --green: #22C55E;
+    --green-light: #DCFCE7;
+    --border: #E2E8F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--slate);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--slate);
+    padding: 0 48px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+
+  .nav-logo .dot {
+    width: 28px; height: 28px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--slate) 0%, #1E3250 50%, var(--blue-dark) 100%);
+    min-height: 560px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(10,127,196,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-left {
+    padding: 72px 56px 72px 64px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-badge .pulse {
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 52px;
+    line-height: 1.1;
+    color: var(--white);
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span {
+    color: var(--orange);
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+    font-weight: 300;
+    max-width: 440px;
+  }
+
+  /* SEARCH CARD */
+  .search-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+    animation: fadeUp 0.7s 0.15s ease both;
+  }
+
+  .search-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  .search-tab {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+  }
+
+  .search-tab.active {
+    background: var(--white);
+    color: var(--slate);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .search-input-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-input-wrap input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    font-size: 15px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input-wrap input::placeholder { color: rgba(255,255,255,0.45); }
+  .search-input-wrap input:focus { border-color: var(--orange); }
+
+  .search-input-wrap .icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.45);
+    font-size: 16px;
+  }
+
+  .btn-find {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .btn-find:hover { background: #D4681A; transform: translateY(-1px); }
+
+  /* Insurance integration inside search */
+  .insurance-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(10,127,196,0.15);
+    border: 1px solid rgba(10,127,196,0.3);
+    border-radius: 10px;
+  }
+
+  .insurance-row label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+
+  .insurance-select {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .insurance-select option { background: var(--slate); color: var(--white); }
+
+  .insurance-badge-small {
+    background: var(--blue);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* HERO RIGHT — Stats */
+  .hero-right {
+    padding: 72px 64px 72px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .stat-icon.orange { background: rgba(244,123,32,0.2); }
+  .stat-icon.blue { background: rgba(10,127,196,0.2); }
+  .stat-icon.green { background: rgba(34,197,94,0.2); }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+
+  /* TRUST BAR */
+  .trust-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 64px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    overflow-x: auto;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .trust-item .icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+
+  .trust-item .icon.blue { background: var(--blue-light); }
+  .trust-item .icon.orange { background: var(--orange-light); }
+  .trust-item .icon.green { background: var(--green-light); }
+
+  .trust-item span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate-mid);
+  }
+
+  .trust-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  /* MAIN SECTIONS */
+  .main { padding: 72px 64px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--slate);
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+    line-height: 1.15;
+  }
+
+  .section-sub {
+    color: var(--slate-light);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  /* TWO COLUMN LAYOUT */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  /* INSURANCE SECTION */
+  .insurance-panel {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+
+  .insurance-panel-header {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+    padding: 28px 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .ins-header-icon {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .ins-header-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .ins-header-text p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+  }
+
+  .insurance-panel-body {
+    padding: 32px;
+  }
+
+  .ins-question {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--slate);
+    margin-bottom: 16px;
+  }
+
+  .ins-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .ins-option {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ins-option:hover { border-color: var(--blue); background: var(--blue-light); }
+  .ins-option.selected { border-color: var(--blue); background: var(--blue-light); }
+
+  .ins-option-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--off-white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+  }
+
+  .ins-option-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate);
+    line-height: 1.3;
+  }
+
+  .ins-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  .ins-carrier-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate-mid);
+    margin-bottom: 12px;
+  }
+
+  .carrier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .carrier-chip {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--slate-mid);
+  }
+
+  .carrier-chip:hover { border-color: var(--blue); color: var(--blue); }
+  .carrier-chip.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+
+  .carrier-preferred {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: var(--green-light);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .carrier-preferred span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #15803D;
+  }
+
+  .btn-ins {
+    width: 100%;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-ins:hover { background: var(--blue-dark); }
+
+  .ins-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--slate-light);
+    margin-top: 12px;
+  }
+
+  /* REVIEWS SECTION */
+  .reviews-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .review-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .overall-score {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .score-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--slate);
+    line-height: 1;
+  }
+
+  .score-details .stars {
+    color: #F59E0B;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .score-details .count {
+    font-size: 13px;
+    color: var(--slate-light);
+    font-weight: 300;
+  }
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--green-light);
+    border: 1px solid rgba(34,197,94,0.25);
+    color: #15803D;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 100px;
+  }
+
+  .rating-bars {
+    margin-bottom: 32px;
+  }
+
+  .rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .rating-bar-row .label {
+    font-size: 12px;
+    color: var(--slate-light);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--orange));
+    border-radius: 3px;
+  }
+
+  .rating-bar-row .pct {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--slate);
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .review-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+
+  .review-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+  .review-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .reviewer-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .reviewer-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: 2px;
+  }
+
+  .reviewer-meta {
+    font-size: 12px;
+    color: var(--slate-light);
+  }
+
+  .review-stars { color: #F59E0B; font-size: 13px; }
+
+  .review-text {
+    font-size: 14px;
+    color: var(--slate-mid);
+    line-height: 1.65;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .review-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .review-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--off-white);
+    color: var(--slate-mid);
+    border: 1px solid var(--border);
+  }
+
+  .verified-review-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #15803D;
+    font-weight: 500;
+  }
+
+  /* HOW IT WORKS */
+  .how-section {
+    background: var(--white);
+    margin: 0 -64px;
+    padding: 72px 64px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .step {
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -16px;
+    top: 20px;
+    color: var(--border);
+    font-size: 20px;
+  }
+
+  .step-num {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    color: var(--blue);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .step h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    font-size: 14px;
+    color: var(--slate-light);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .step-ins-tag {
+    display: inline-block;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* BOTTOM CTA */
+  .bottom-cta {
+    background: linear-gradient(135deg, var(--slate) 0%, var(--blue-dark) 100%);
+    margin: 72px -64px -72px;
+    padding: 72px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .cta-text h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.8px;
+    margin-bottom: 12px;
+  }
+
+  .cta-text p {
+    color: rgba(255,255,255,0.6);
+    font-size: 16px;
+    font-weight: 300;
+    max-width: 460px;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: #D4681A; transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 16px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  /* DECISION GUIDE */
+  .decision-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .decision-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .decision-step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22654A, #1A3A2A);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .decision-step-content h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 6px;
+  }
+
+  .decision-step-content p {
+    font-size: 13px;
+    color: var(--slate-light);
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .decision-step-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: #22654A;
+    text-decoration: none;
+  }
+
+  .decision-step-link:hover { text-decoration: underline; }
+
+  .decision-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #FFF7ED;
+    border: 1px solid rgba(244,123,32,0.25);
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+
+  .tip-icon { font-size: 15px; flex-shrink: 0; }
+
+  .decision-tip span {
+    font-size: 12px;
+    color: var(--slate-mid);
+    line-height: 1.5;
+  }
+
+  .decision-options-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .decision-outcome {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .outcome-icon { font-size: 22px; margin-bottom: 6px; }
+
+  .outcome-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate);
+    margin-bottom: 4px;
+  }
+
+  .outcome-desc {
+    font-size: 11px;
+    color: var(--slate-light);
+    line-height: 1.4;
+    font-weight: 300;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="dot">🔵</div>
+    Carwise
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Find a Shop</a></li>
+    <li><a href="#">Insurance Partners</a></li>
+    <li><a href="#">Reviews</a></li>
+    <li><a href="#">For Shop Owners</a></li>
+    <li><a href="#" class="nav-cta">Find a Shop →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <div class="pulse"></div>
+      Trusted by 4.2M drivers nationwide
+    </div>
+    <h1>Find Auto Body<br>Repair You Can<br><span>Trust.</span></h1>
+    <p>Real reviews from verified repair customers — find a trusted shop, get an estimate, and make the best decision for your situation.</p>
+
+    <div class="search-card">
+      <div class="search-tabs">
+        <button class="search-tab active">Find a Shop</button>
+        <button class="search-tab">Get an Estimate</button>
+      </div>
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <span class="icon">📍</span>
+          <input type="text" placeholder="Enter your ZIP code or city" value="Chicago, IL">
+        </div>
+        <button class="btn-find">Find Shops</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-card">
+      <div class="stat-icon orange">⭐</div>
+      <div>
+        <div class="stat-value">4.8</div>
+        <div class="stat-label">Average shop rating from verified repair customers</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">🏪</div>
+      <div>
+        <div class="stat-value">28,000+</div>
+        <div class="stat-label">Certified auto body shops across the US</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">✅</div>
+      <div>
+        <div class="stat-value">2.1M</div>
+        <div class="stat-label">Verified reviews — only from real repair customers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <div class="icon blue">🔒</div>
+    <span>Reviews verified from real repair orders</span>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <div class="icon orange">🏪</div>
+    <span>28,000+ certified shops nationwide</span>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <div class="icon green">📸</div>
+    <span>Submit photos for an online estimate</span>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <div class="icon blue">💳</div>
+    <span>Pay out of pocket or through your insurer</span>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <div class="icon orange">🚗</div>
+    <span>Rental car coordination available</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="two-col">
+
+    <!-- LEFT: REVIEWS -->
+    <div>
+      <div class="section-label">Verified Reviews</div>
+      <div class="section-title">Real Reviews from<br>Real Customers</div>
+      <p class="section-sub">We only collect reviews after confirming you received service — no fakes, no gaming, no paid placements.</p>
+
+      <div class="review-header-row">
+        <div class="overall-score">
+          <div class="score-big">4.8</div>
+          <div class="score-details">
+            <div class="stars">★★★★★</div>
+            <div class="count">2,143,892 verified reviews</div>
+          </div>
+        </div>
+        <div class="verified-badge">
+          ✅ 100% Verified
+        </div>
+      </div>
+
+      <div class="rating-bars">
+        <div class="rating-bar-row">
+          <span class="label">Quality of Work</span>
+          <div class="bar-track"><div class="bar-fill" style="width:94%"></div></div>
+          <span class="pct">94%</span>
+        </div>
+        <div class="rating-bar-row">
+          <span class="label">Communication</span>
+          <div class="bar-track"><div class="bar-fill" style="width:89%"></div></div>
+          <span class="pct">89%</span>
+        </div>
+        <div class="rating-bar-row">
+          <span class="label">On-Time Delivery</span>
+          <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+          <span class="pct">85%</span>
+        </div>
+        <div class="rating-bar-row">
+          <span class="label">Shop Helpfulness</span>
+          <div class="bar-track"><div class="bar-fill" style="width:91%"></div></div>
+          <span class="pct">91%</span>
+        </div>
+      </div>
+
+      <div class="reviews-stack">
+        <div class="review-card">
+          <div class="review-top">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background: linear-gradient(135deg,#0A7FC4,#065A8C);">JM</div>
+              <div>
+                <div class="reviewer-name">James M.</div>
+                <div class="reviewer-meta">Verified Repair Customer · Chicago, IL · 3 days ago</div>
+              </div>
+            </div>
+            <div>
+              <div class="review-stars">★★★★★</div>
+              <div class="verified-review-badge">✅ Verified Repair</div>
+            </div>
+          </div>
+          <p class="review-text">After my fender bender, Carwise helped me find a top-rated shop just a few miles away. I got a written estimate the same day, decided to pay out of pocket since it was under my deductible, and the car was done in 4 days. Looks brand new.</p>
+          <div class="review-tags">
+            <span class="review-tag">Free Estimate</span>
+            <span class="review-tag">Fast Turnaround</span>
+            <span class="review-tag">Fender Repair</span>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background: linear-gradient(135deg,#F47B20,#C05E10);">SR</div>
+              <div>
+                <div class="reviewer-name">Sofia R.</div>
+                <div class="reviewer-meta">Verified Repair Customer · Naperville, IL · 1 week ago</div>
+              </div>
+            </div>
+            <div>
+              <div class="review-stars">★★★★★</div>
+              <div class="verified-review-badge">✅ Verified Repair</div>
+            </div>
+          </div>
+          <p class="review-text">I had no idea what to do after my accident. Carwise helped me find a shop, get a free estimate, and figure out it made sense to file a claim given how much damage there was. Having that number in hand before calling my insurer made the whole process so much smoother.</p>
+          <div class="review-tags">
+            <span class="review-tag">Free Estimate</span>
+            <span class="review-tag">Helpful Guidance</span>
+            <span class="review-tag">Collision Repair</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: CLAIM DECISION GUIDE -->
+    <div>
+      <div class="section-label">Decision Guide</div>
+      <div class="section-title">Not Sure Whether to<br>File a Claim?</div>
+      <p class="section-sub">You don't have to decide right away. Use Carwise to get a real repair estimate first — then you'll have the information you need to make a smart choice.</p>
+
+      <div class="insurance-panel">
+        <div class="insurance-panel-header" style="background: linear-gradient(135deg, #1A3A2A, #22654A);">
+          <div class="ins-header-icon">🤔</div>
+          <div class="ins-header-text">
+            <h3>Your 3-Step Decision Path</h3>
+            <p>Get the facts before you decide — it only takes a few minutes</p>
+          </div>
+        </div>
+        <div class="insurance-panel-body">
+
+          <div class="decision-steps">
+            <div class="decision-step">
+              <div class="decision-step-num">1</div>
+              <div class="decision-step-content">
+                <h4>Get a Free Estimate from a Local Shop</h4>
+                <p>Use Carwise to find a trusted body shop near you and request a repair estimate. Many shops offer free written estimates — no commitment required. You can even submit photos online for a preliminary quote.</p>
+                <a href="#" class="decision-step-link">→ Find shops that offer free estimates</a>
+              </div>
+            </div>
+
+            <div class="decision-step">
+              <div class="decision-step-num">2</div>
+              <div class="decision-step-content">
+                <h4>Compare the Estimate to Your Deductible</h4>
+                <p>Once you have the repair cost, compare it to your insurance deductible. If the repair is close to or less than your deductible, paying out of pocket may make more sense — filing a claim could raise your premium without much benefit.</p>
+                <div class="decision-tip">
+                  <span class="tip-icon">💡</span>
+                  <span><strong>General rule:</strong> If repairs cost less than 2× your deductible, consider paying out of pocket.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-step">
+              <div class="decision-step-num">3</div>
+              <div class="decision-step-content">
+                <h4>Decide — Then Act With Confidence</h4>
+                <p>With a real estimate in hand, you're in control. Pay the shop directly if it makes sense, or contact your insurer to open a claim knowing exactly what you're dealing with. Either way, Carwise helps you find the right shop for the job.</p>
+                <div class="decision-options-row">
+                  <div class="decision-outcome">
+                    <div class="outcome-icon">💳</div>
+                    <div class="outcome-label">Pay Out of Pocket</div>
+                    <div class="outcome-desc">No claim, no rate impact — shop handles everything directly</div>
+                  </div>
+                  <div class="decision-outcome">
+                    <div class="outcome-icon">📋</div>
+                    <div class="outcome-label">File a Claim</div>
+                    <div class="outcome-desc">Contact your insurer with the estimate — you're already prepared</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ins-divider"></div>
+
+          <button class="btn-ins" style="background: #22654A;" onmouseover="this.style.background='#1A3A2A'" onmouseout="this.style.background='#22654A'">Find a Shop & Get a Free Estimate →</button>
+          <p class="ins-note">Carwise connects you to shops — your insurance decisions stay between you and your insurer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="section-label">Process</div>
+    <div class="section-title">From Damage to Fixed — In 4 Simple Steps</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Tell Us Your Location</h4>
+        <p>Enter your ZIP code or city. We instantly surface verified, highly-rated body shops near you — sorted by quality and proximity.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Get a Free Estimate</h4>
+        <p>Request a repair estimate from one or more shops — in person or by submitting photos online. No commitment required, just real numbers.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Decide How to Pay</h4>
+        <p>Use your estimate to decide: pay the shop directly out of pocket, or contact your insurer to open a claim. You're in control either way.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Track Your Repair</h4>
+        <p>Get real-time status updates as your car moves through the repair process — right up to pickup day.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div class="bottom-cta">
+    <div class="cta-text">
+      <h2>Find Your Trusted Shop in 60 Seconds</h2>
+      <p>Join millions of drivers who've taken the guesswork out of auto body repair — with real reviews, free estimates, and the information to make the right call.</p>
+    </div>
+    <div class="cta-actions">
+      <button class="btn-secondary">How It Works</button>
+      <button class="btn-primary">Find a Shop Near Me →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.search-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Carrier selection
+  document.querySelectorAll('.carrier-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.carrier-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const name = chip.textContent;
+      document.querySelector('.carrier-preferred strong').textContent = `Preferred shops available for ${name}`;
+    });
+  });
+
+  // Insurance option selection
+  document.querySelectorAll('.ins-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.ins-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+  });
+</script>
+
+</body>
+</html>

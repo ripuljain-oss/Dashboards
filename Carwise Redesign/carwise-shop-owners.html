@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carwise for Shop Owners — Get Found by Drivers Near You</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --garage: #1C1C1E;
+    --garage-mid: #2C2C2E;
+    --garage-light: #48484A;
+    --steel: #8E8E93;
+    --silver: #AEAEB2;
+    --mist: #F2F2F7;
+    --white: #FFFFFF;
+    --orange: #FF6B00;
+    --orange-dark: #D45800;
+    --orange-glow: rgba(255,107,0,0.12);
+    --orange-pale: #FFF4EC;
+    --green: #30D158;
+    --green-pale: #E8FAF0;
+    --blue: #0A84FF;
+    --blue-pale: #EAF3FF;
+    --yellow: #FFD60A;
+    --border-dark: rgba(255,255,255,0.09);
+    --border-light: #E5E5EA;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--garage);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(28,28,30,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-dark);
+    padding: 0 56px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-mark {
+    width: 32px; height: 32px;
+    background: var(--orange);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+
+  .nav-logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    color: var(--white);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--steel);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-weight: 600 !important;
+    font-size: 14px;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--orange-dark) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    padding-top: 60px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Textured dark background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.012) 40px,
+        rgba(255,255,255,0.012) 41px
+      );
+  }
+
+  .hero-left {
+    padding: 80px 56px 80px 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange-glow);
+    border: 1px solid rgba(255,107,0,0.3);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 76px;
+    line-height: 0.95;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  .hero h1 .highlight {
+    color: var(--orange);
+    display: block;
+  }
+
+  .hero h1 .thin {
+    font-weight: 500;
+    color: var(--silver);
+  }
+
+  .hero-lead {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--silver);
+    font-weight: 300;
+    max-width: 480px;
+    margin-bottom: 48px;
+  }
+
+  .hero-lead strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 52px;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,0,0.35); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--silver);
+    border: 1px solid var(--garage-light);
+    border-radius: 10px;
+    padding: 16px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--silver); color: var(--white); }
+
+  .hero-proof {
+    display: flex;
+    gap: 36px;
+  }
+
+  .proof-item {}
+
+  .proof-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 36px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .proof-label {
+    font-size: 13px;
+    color: var(--steel);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .proof-divider {
+    width: 1px;
+    background: var(--border-dark);
+    align-self: stretch;
+  }
+
+  /* Hero Right — Visual */
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 72px 80px 40px;
+    animation: fadeUp 0.7s 0.15s ease both;
+  }
+
+  /* Big orange accent arc */
+  .hero-arc {
+    position: absolute;
+    right: -120px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 80px solid rgba(255,107,0,0.06);
+    pointer-events: none;
+  }
+
+  .listing-preview {
+    background: var(--garage-mid);
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+    position: relative;
+    z-index: 1;
+  }
+
+  .listing-topbar {
+    background: var(--garage);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .listing-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .listing-url {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: var(--steel);
+    margin-left: 8px;
+  }
+
+  .listing-body { padding: 24px; }
+
+  .listing-shop-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .listing-addr {
+    font-size: 13px;
+    color: var(--steel);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .listing-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .listing-stars { color: var(--yellow); font-size: 15px; letter-spacing: 1px; }
+  .listing-score { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; color: var(--white); }
+  .listing-count { font-size: 12px; color: var(--steel); }
+
+  .listing-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(48,209,88,0.12);
+    border: 1px solid rgba(48,209,88,0.25);
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    margin-bottom: 18px;
+    letter-spacing: 0.03em;
+  }
+
+  .listing-divider { height: 1px; background: var(--border-dark); margin: 16px 0; }
+
+  .listing-tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .listing-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .tag-orange { background: rgba(255,107,0,0.12); color: var(--orange); border: 1px solid rgba(255,107,0,0.2); }
+  .tag-blue { background: rgba(10,132,255,0.12); color: var(--blue); border: 1px solid rgba(10,132,255,0.2); }
+  .tag-green { background: rgba(48,209,88,0.1); color: var(--green); border: 1px solid rgba(48,209,88,0.2); }
+
+  .listing-ins-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: rgba(10,132,255,0.07);
+    border: 1px solid rgba(10,132,255,0.15);
+    border-radius: 8px;
+  }
+
+  .listing-ins-label { font-size: 12px; color: var(--steel); }
+  .listing-ins-chips { display: flex; gap: 5px; }
+  .listing-ins-chip {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    background: rgba(10,132,255,0.15);
+    color: var(--blue);
+    border-radius: 4px;
+  }
+
+  .listing-cta-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .listing-btn-main {
+    flex: 1;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+
+  .listing-btn-sec {
+    flex: 1;
+    background: rgba(255,255,255,0.07);
+    color: var(--silver);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+  }
+
+  .listing-ccc-strip {
+    margin: 16px -24px -24px;
+    padding: 12px 24px;
+    background: rgba(0,63,125,0.2);
+    border-top: 1px solid rgba(0,63,125,0.35);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ccc-mini-badge {
+    background: #003F7D;
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .ccc-strip-text { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  /* ── LIGHT SECTIONS ── */
+  .light-section {
+    background: var(--white);
+    color: var(--garage);
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 88px 72px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .eyebrow::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 28px;
+    background: var(--orange);
+  }
+
+  .section-h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 52px;
+    letter-spacing: -0.5px;
+    line-height: 1.0;
+    text-transform: uppercase;
+    color: var(--garage);
+    margin-bottom: 16px;
+  }
+
+  .section-h2 em {
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .section-lead {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--garage-light);
+    font-weight: 400;
+    max-width: 580px;
+    margin-bottom: 60px;
+  }
+
+  /* Dark section */
+  .dark-section { background: var(--garage); }
+  .dark-section .section-h2 { color: var(--white); }
+  .dark-section .section-lead { color: var(--steel); }
+
+  /* ── BENEFITS ── */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .benefit-card {
+    background: var(--mist);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.22s;
+    border: 2px solid transparent;
+  }
+
+  .benefit-card:hover {
+    background: var(--white);
+    border-color: var(--orange);
+    box-shadow: 0 8px 32px rgba(255,107,0,0.1);
+    transform: translateY(-4px);
+  }
+
+  .benefit-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .benefit-icon.orange { background: var(--orange-pale); }
+  .benefit-icon.green { background: var(--green-pale); }
+  .benefit-icon.blue { background: var(--blue-pale); }
+
+  .benefit-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: var(--garage);
+    margin-bottom: 10px;
+  }
+
+  .benefit-body {
+    font-size: 14px;
+    color: var(--garage-light);
+    line-height: 1.75;
+    font-weight: 400;
+  }
+
+  /* ── HOW TO JOIN ── */
+  .join-section { background: var(--garage-mid); }
+  .join-section .section-h2 { color: var(--white); }
+  .join-section .section-lead { color: var(--steel); }
+
+  .join-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* Steps */
+  .steps-list { display: flex; flex-direction: column; }
+
+  .step-item {
+    display: flex;
+    gap: 20px;
+    position: relative;
+  }
+
+  .step-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 23px;
+    top: 52px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--orange), rgba(255,107,0,0.1));
+  }
+
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .step-num {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-num.done {
+    background: var(--green);
+  }
+
+  .step-num.prereq {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid var(--border-dark);
+    color: var(--steel);
+    font-size: 16px;
+  }
+
+  .step-content {
+    padding: 8px 0 44px;
+  }
+
+  .step-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .tag-prereq { background: rgba(142,142,147,0.15); color: var(--steel); }
+  .tag-action { background: rgba(255,107,0,0.15); color: var(--orange); }
+  .tag-auto { background: rgba(48,209,88,0.12); color: var(--green); }
+
+  .step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  .step-body {
+    font-size: 14px;
+    color: var(--steel);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .step-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(255,107,0,0.07);
+    border-left: 3px solid var(--orange);
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  /* CCC ONE Panel — right side */
+  .ccc-panel {
+    background: var(--garage);
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    position: sticky;
+    top: 80px;
+  }
+
+  .ccc-panel-header {
+    background: #003F7D;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .ccc-panel-logo {
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .ccc-panel-header-text h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    margin-bottom: 3px;
+  }
+
+  .ccc-panel-header-text p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+
+  .ccc-panel-body { padding: 28px; }
+
+  .ccc-panel-intro {
+    font-size: 14px;
+    color: var(--silver);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  .ccc-setting {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .ccc-setting:hover { border-color: rgba(255,107,0,0.4); }
+
+  .ccc-setting-left { display: flex; align-items: center; gap: 12px; }
+
+  .ccc-setting-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .ccc-setting-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+
+  .ccc-setting-desc { font-size: 12px; color: var(--steel); }
+
+  /* Toggle */
+  .toggle {
+    width: 44px; height: 24px;
+    background: #48484A;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .toggle.on { background: var(--green); }
+
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    background: var(--white);
+    border-radius: 50%;
+    top: 2px; left: 2px;
+    transition: left 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+
+  .toggle.on::after { left: 22px; }
+
+  .ccc-panel-tip {
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: rgba(48,209,88,0.07);
+    border: 1px solid rgba(48,209,88,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ccc-panel-tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .ccc-panel-tip-text {
+    font-size: 13px;
+    color: var(--green);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .ccc-panel-not-customer {
+    margin-top: 16px;
+    padding: 16px 18px;
+    background: rgba(255,107,0,0.06);
+    border: 1px solid rgba(255,107,0,0.2);
+    border-radius: 10px;
+  }
+
+  .ccc-panel-not-customer p {
+    font-size: 13px;
+    color: var(--steel);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .ccc-panel-not-customer a {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* ── WHAT SHOWS ON YOUR LISTING ── */
+  .listing-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .listing-items { display: flex; flex-direction: column; gap: 16px; }
+
+  .listing-field {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.2s;
+  }
+
+  .listing-field:hover {
+    border-color: var(--orange);
+    box-shadow: 0 4px 16px rgba(255,107,0,0.08);
+  }
+
+  .listing-field-icon {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .lfi-orange { background: var(--orange-pale); }
+  .lfi-blue { background: var(--blue-pale); }
+  .lfi-green { background: var(--green-pale); }
+
+  .listing-field-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--garage);
+    margin-bottom: 3px;
+  }
+
+  .listing-field-src {
+    font-size: 12px;
+    color: var(--steel);
+    line-height: 1.5;
+  }
+
+  .src-badge {
+    display: inline-block;
+    background: #003F7D;
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    margin-right: 4px;
+  }
+
+  /* ── REVIEWS SECTION ── */
+  .reviews-explainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .review-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .review-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .review-step:last-child { border-bottom: none; }
+
+  .review-step-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .review-step-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--garage);
+    margin-bottom: 4px;
+  }
+
+  .review-step-desc {
+    font-size: 13px;
+    color: var(--garage-light);
+    line-height: 1.65;
+  }
+
+  /* Sample review cards */
+  .sample-reviews { display: flex; flex-direction: column; gap: 14px; }
+
+  .sample-review {
+    background: var(--mist);
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid var(--border-light);
+  }
+
+  .sr-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .sr-reviewer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sr-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .sr-name { font-size: 14px; font-weight: 600; color: var(--garage); margin-bottom: 2px; }
+  .sr-meta { font-size: 11px; color: var(--steel); }
+  .sr-stars { color: var(--yellow); font-size: 13px; }
+  .sr-text { font-size: 13px; color: var(--garage-light); line-height: 1.65; margin-bottom: 10px; }
+
+  .sr-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #15803D;
+  }
+
+  /* ── FAQ ── */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border-dark);
+  }
+
+  .faq-item { background: var(--garage-mid); }
+
+  .faq-q {
+    padding: 20px 26px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: background 0.15s;
+    font-family: 'Barlow', sans-serif;
+  }
+
+  .faq-q:hover { background: rgba(255,255,255,0.04); }
+  .faq-q.open { background: rgba(255,107,0,0.08); color: var(--orange); }
+
+  .faq-chevron { transition: transform 0.2s; color: var(--steel); font-size: 18px; }
+  .faq-q.open .faq-chevron { transform: rotate(180deg); color: var(--orange); }
+
+  .faq-a {
+    display: none;
+    padding: 0 26px 22px;
+    font-size: 15px;
+    color: var(--steel);
+    line-height: 1.75;
+    font-weight: 400;
+    background: rgba(255,107,0,0.04);
+  }
+
+  .faq-a.open { display: block; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--orange);
+    padding: 96px 72px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 30px,
+        rgba(255,255,255,0.04) 30px,
+        rgba(255,255,255,0.04) 31px
+      );
+  }
+
+  .cta-inner { position: relative; max-width: 680px; margin: 0 auto; }
+
+  .cta-inner h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 60px;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+
+  .cta-inner p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
+    line-height: 1.65;
+    margin-bottom: 44px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .btn-cta-white {
+    background: var(--white);
+    color: var(--orange);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,0.2); }
+
+  .btn-cta-ghost {
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.9);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+  /* FOOTER */
+  footer {
+    background: var(--garage);
+    padding: 36px 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-dark);
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">🔵</div>
+    <span class="nav-logo-text">Carwise</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#benefits">Why Carwise</a></li>
+    <li><a href="#how-to-join">How to Join</a></li>
+    <li><a href="#listing">Your Listing</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#activate" class="nav-cta">Activate in CCC ONE →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">🔧 For Auto Body Shop Owners</div>
+    <h1>
+      <span class="thin">Get Your Shop</span>
+      <span class="highlight">in Front of</span>
+      Drivers Who Need You.
+    </h1>
+    <p class="hero-lead">Carwise puts your shop on the map for drivers searching for collision repair — and if you're already using <strong>CCC ONE</strong>, you're just a few clicks away from going live.</p>
+    <div class="hero-ctas">
+      <a href="#how-to-join" class="btn-primary">See How to Activate →</a>
+      <a href="#benefits" class="btn-outline">Why It Works</a>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-item">
+        <div class="proof-num">4.2M+</div>
+        <div class="proof-label">Drivers use Carwise<br>to find a shop</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">28K</div>
+        <div class="proof-label">Shops already<br>on the network</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">Free</div>
+        <div class="proof-label">For CCC ONE<br>customers to join</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-arc"></div>
+    <!-- Listing preview -->
+    <div class="listing-preview">
+      <div class="listing-topbar">
+        <div class="listing-dot" style="background:#FF605C;"></div>
+        <div class="listing-dot" style="background:#FFBD44;"></div>
+        <div class="listing-dot" style="background:#00CA4E;"></div>
+        <div class="listing-url">carwise.com/shop/your-shop</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-shop-name">Your Shop Name Here</div>
+        <div class="listing-addr">📍 123 Main St, Your City, ST · <span style="color:var(--green);">Open Now</span></div>
+
+        <div class="listing-rating-row">
+          <span class="listing-stars">★★★★★</span>
+          <span class="listing-score">4.9</span>
+          <span class="listing-count">· 148 verified reviews</span>
+        </div>
+
+        <div class="listing-verified">✅ All reviews from verified repair customers</div>
+
+        <div class="listing-divider"></div>
+
+        <div class="listing-tag-row">
+          <span class="listing-tag tag-orange">I-CAR Gold</span>
+          <span class="listing-tag tag-blue">Honda Certified</span>
+          <span class="listing-tag tag-green">DRP Network</span>
+          <span class="listing-tag tag-orange">Frame Repair</span>
+        </div>
+
+        <div class="listing-ins-row">
+          <span class="listing-ins-label">🛡️ Works with:</span>
+          <div class="listing-ins-chips">
+            <span class="listing-ins-chip">State Farm</span>
+            <span class="listing-ins-chip">GEICO</span>
+            <span class="listing-ins-chip">Allstate</span>
+          </div>
+        </div>
+
+        <div class="listing-cta-row">
+          <button class="listing-btn-main">📞 Call Now</button>
+          <button class="listing-btn-sec">🗓 Book Estimate</button>
+        </div>
+
+        <div class="listing-ccc-strip">
+          <span class="ccc-mini-badge">CCC ONE</span>
+          <span class="ccc-strip-text">Profile data synced automatically · Verified repair reviews only</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="benefits" class="light-section">
+  <div class="section-inner">
+    <div class="eyebrow">Why Carwise</div>
+    <h2 class="section-h2">What You Get When<br>You're on <em>Carwise</em></h2>
+    <p class="section-lead">Joining Carwise puts your shop in front of drivers at the moment they need collision repair — with a listing that's more credible than anything you'd get from a generic business directory.</p>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon orange">🎯</div>
+        <div class="benefit-title">Found by Drivers Who Are Ready to Book</div>
+        <p class="benefit-body">Carwise users are actively searching after an accident — not browsing casually. These are high-intent customers who need a shop now. Your listing is shown to drivers searching in your area, right when they're ready to call.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon green">✅</div>
+        <div class="benefit-title">Reviews That Carry Real Weight</div>
+        <p class="benefit-body">Carwise reviews come only from verified repair customers — no anonymous posts, no fake reviews from competitors. Drivers trust Carwise ratings precisely because they know only people who actually had their car repaired can leave feedback.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon blue">🛡️</div>
+        <div class="benefit-title">Visibility to Insurance-Referred Customers</div>
+        <p class="benefit-body">Insurance carriers use Carwise to route policyholders to preferred and DRP shops. If you're a preferred shop for any carrier, that relationship is surfaced directly on your listing — making it easier for their customers to find and choose you.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon orange">🔄</div>
+        <div class="benefit-title">Your Profile, Always Up-to-Date</div>
+        <p class="benefit-body">Your Carwise listing is powered by your CCC ONE data — so your hours, certifications, and contact info stay current automatically. You never have to log in to "update your listing" like you would on Yelp or Google.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon green">💰</div>
+        <div class="benefit-title">Free for CCC ONE Customers</div>
+        <p class="benefit-body">If you're already paying for CCC ONE, activating Carwise costs you nothing extra. It's a built-in benefit of your existing platform — you just need to turn it on.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon blue">📊</div>
+        <div class="benefit-title">Showcase Your Certifications</div>
+        <p class="benefit-body">Your I-CAR, OEM, and other certifications are pulled directly from CCC ONE and displayed prominently on your listing — giving you a credibility advantage over shops without documented qualifications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO JOIN -->
+<section id="how-to-join" class="join-section">
+  <div class="section-inner">
+    <div class="eyebrow" style="color:var(--orange);">How to Join</div>
+    <h2 class="section-h2" style="color:var(--white);">Activating Carwise<br>Takes <em>Minutes</em></h2>
+    <p class="section-lead" style="color:var(--steel);">The only requirement is that you're an active CCC ONE customer. If you are, here's exactly how to get your shop listed — no IT team needed.</p>
+
+    <div class="join-grid">
+      <!-- Steps -->
+      <div class="steps-list">
+
+        <div class="step-item">
+          <div class="step-left">
+            <div class="step-num prereq">⚙</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag tag-prereq">Prerequisite</span>
+            <div class="step-title">You Must Be a CCC ONE Customer</div>
+            <p class="step-body">Carwise is exclusively available to shops that actively use CCC ONE as their shop management system. If you're not yet a CCC ONE customer, you'll need to sign up with CCC first — see the panel on the right for more info.</p>
+            <div class="step-note">Already using CCC ONE? Great — keep reading. You're one setting away from going live.</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-left">
+            <div class="step-num">1</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag tag-action">You Do This</span>
+            <div class="step-title">Log Into Your CCC ONE Account</div>
+            <p class="step-body">Open CCC ONE and navigate to your shop settings. You can access this from the main dashboard using your existing username and password — no new account required.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-left">
+            <div class="step-num">2</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag tag-action">You Do This</span>
+            <div class="step-title">Find the Carwise Setting</div>
+            <p class="step-body">In your CCC ONE settings, navigate to <strong style="color:var(--white);">Shop Profile → Carwise Listing</strong>. You'll see a toggle that controls whether your shop appears on Carwise. It may be labeled "Carwise Profile" or "Consumer Listing Visibility" depending on your CCC ONE version.</p>
+            <div class="step-note">Can't find it? Contact CCC ONE support at 1-800-831-0027 and ask them to walk you through enabling your Carwise listing.</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-left">
+            <div class="step-num">3</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag tag-action">You Do This</span>
+            <div class="step-title">Toggle It On &amp; Review Your Profile</div>
+            <p class="step-body">Enable the Carwise listing toggle. You'll be shown a preview of how your shop profile will appear on Carwise — pulled from your existing CCC ONE data. Review it for accuracy: shop name, address, phone number, hours, and certifications.</p>
+            <div class="step-note">If any information looks incorrect, update it in your main CCC ONE shop profile — changes will automatically sync to your Carwise listing.</div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-left">
+            <div class="step-num done">✓</div>
+          </div>
+          <div class="step-content">
+            <span class="step-tag tag-auto">Automatic</span>
+            <div class="step-title">You're Live on Carwise</div>
+            <p class="step-body">Your shop listing goes live on Carwise within 24 hours. From this point on, your profile stays automatically in sync with CCC ONE — and review collection begins automatically once you complete repair orders.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CCC ONE Panel -->
+      <div class="ccc-panel">
+        <div class="ccc-panel-header">
+          <div class="ccc-panel-logo">CCC</div>
+          <div class="ccc-panel-header-text">
+            <h3>CCC ONE Settings</h3>
+            <p>Where you activate your Carwise listing</p>
+          </div>
+        </div>
+        <div class="ccc-panel-body">
+          <p class="ccc-panel-intro">This is a simplified view of the settings you'll see inside CCC ONE. Your Carwise listing is controlled by a single toggle — once enabled, everything else is automatic.</p>
+
+          <div class="ccc-setting">
+            <div class="ccc-setting-left">
+              <div class="ccc-setting-icon" style="background:rgba(48,209,88,0.1);">🌐</div>
+              <div>
+                <div class="ccc-setting-name">Carwise Listing</div>
+                <div class="ccc-setting-desc">Show my shop on Carwise.com</div>
+              </div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="ccc-setting">
+            <div class="ccc-setting-left">
+              <div class="ccc-setting-icon" style="background:rgba(255,107,0,0.1);">⭐</div>
+              <div>
+                <div class="ccc-setting-name">Review Collection</div>
+                <div class="ccc-setting-desc">Auto-send review requests after repairs</div>
+              </div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="ccc-setting">
+            <div class="ccc-setting-left">
+              <div class="ccc-setting-icon" style="background:rgba(10,132,255,0.1);">🛡️</div>
+              <div>
+                <div class="ccc-setting-name">Insurance Relationships</div>
+                <div class="ccc-setting-desc">Display DRP and preferred carrier status</div>
+              </div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="ccc-setting">
+            <div class="ccc-setting-left">
+              <div class="ccc-setting-icon" style="background:rgba(255,214,10,0.1);">🏅</div>
+              <div>
+                <div class="ccc-setting-name">Certifications Display</div>
+                <div class="ccc-setting-desc">Show I-CAR, OEM and other certs</div>
+              </div>
+            </div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <div class="ccc-panel-tip">
+            <div class="ccc-panel-tip-icon">💡</div>
+            <div class="ccc-panel-tip-text">All profile data comes directly from your CCC ONE account. Keep your CCC ONE shop profile accurate and your Carwise listing will always reflect the latest information.</div>
+          </div>
+
+          <div class="ccc-panel-not-customer">
+            <p>Not yet a CCC ONE customer? You'll need to set up CCC ONE before you can activate Carwise. Contact CCC to get started.</p>
+            <a href="#">Contact CCC to learn about CCC ONE →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT SHOWS ON YOUR LISTING -->
+<section id="listing" class="light-section">
+  <div class="section-inner">
+    <div class="eyebrow">Your Listing</div>
+    <h2 class="section-h2">What Appears on<br>Your <em>Carwise Profile</em></h2>
+    <p class="section-lead">Every field on your Carwise listing is populated automatically from your CCC ONE data. Here's exactly what drivers will see — and where each piece of information comes from.</p>
+
+    <div class="listing-breakdown">
+      <div class="listing-items">
+        <div class="listing-field">
+          <div class="listing-field-icon lfi-orange">🏪</div>
+          <div>
+            <div class="listing-field-name">Shop Name, Address & Phone</div>
+            <div class="listing-field-src"><span class="src-badge">CCC ONE</span> Pulled from your registered CCC ONE shop profile. Keep this current in CCC ONE and it updates automatically on Carwise.</div>
+          </div>
+        </div>
+        <div class="listing-field">
+          <div class="listing-field-icon lfi-blue">🕐</div>
+          <div>
+            <div class="listing-field-name">Hours of Operation</div>
+            <div class="listing-field-src"><span class="src-badge">CCC ONE</span> Your business hours as entered in CCC ONE. Carwise shows "Open Now" or "Closed" to drivers in real time based on this data.</div>
+          </div>
+        </div>
+        <div class="listing-field">
+          <div class="listing-field-icon lfi-green">🏅</div>
+          <div>
+            <div class="listing-field-name">Certifications & Qualifications</div>
+            <div class="listing-field-src"><span class="src-badge">CCC ONE</span> I-CAR status, OEM certifications (Honda, Toyota, Ford, etc.), ASE, and other qualifications registered in your CCC ONE account.</div>
+          </div>
+        </div>
+        <div class="listing-field">
+          <div class="listing-field-icon lfi-blue">🛡️</div>
+          <div>
+            <div class="listing-field-name">Insurance Carrier Relationships</div>
+            <div class="listing-field-src"><span class="src-badge">CCC ONE</span> DRP networks and preferred carrier relationships tied to your shop in CCC ONE. Policyholders from those carriers will see your shop highlighted.</div>
+          </div>
+        </div>
+        <div class="listing-field">
+          <div class="listing-field-icon lfi-orange">🔧</div>
+          <div>
+            <div class="listing-field-name">Services & Specializations</div>
+            <div class="listing-field-src"><span class="src-badge">CCC ONE</span> Repair capabilities and service categories registered in your CCC ONE profile — frame repair, paintless dent repair, glass, etc.</div>
+          </div>
+        </div>
+        <div class="listing-field">
+          <div class="listing-field-icon lfi-green">⭐</div>
+          <div>
+            <div class="listing-field-name">Verified Customer Reviews & Ratings</div>
+            <div class="listing-field-src"><span class="src-badge">CCC ONE</span> Reviews collected automatically after repairs completed in CCC ONE. Only customers with a real repair on record can submit — ensuring your rating is accurate and trustworthy.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini listing preview for light section -->
+      <div>
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--steel); margin-bottom:14px;">Preview: How drivers see your shop</div>
+        <div style="background:var(--garage); border-radius:18px; overflow:hidden; box-shadow:0 12px 48px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.06);">
+          <div style="background:var(--garage-mid); padding:12px 18px; display:flex; gap:6px; border-bottom:1px solid rgba(255,255,255,0.07);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#FF605C;"></div>
+            <div style="width:9px;height:9px;border-radius:50%;background:#FFBD44;"></div>
+            <div style="width:9px;height:9px;border-radius:50%;background:#00CA4E;"></div>
+          </div>
+          <div style="padding:22px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;color:var(--white);margin-bottom:3px;">Premier Auto Body</div>
+            <div style="font-size:12px;color:var(--steel);margin-bottom:14px;">📍 4820 N. Clark St · Chicago, IL · <span style="color:var(--green);">Open until 5:30pm</span></div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="color:var(--yellow);font-size:14px;">★★★★★</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;color:var(--white);">4.9</span>
+              <span style="font-size:11px;color:var(--steel);">· 204 verified reviews</span>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:4px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.2);color:var(--green);font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;margin-bottom:14px;letter-spacing:0.04em;">✅ VERIFIED REVIEWS ONLY</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;background:rgba(255,107,0,0.12);color:var(--orange);border:1px solid rgba(255,107,0,0.2);letter-spacing:0.04em;text-transform:uppercase;">I-CAR GOLD</span>
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;background:rgba(10,132,255,0.12);color:var(--blue);border:1px solid rgba(10,132,255,0.2);letter-spacing:0.04em;text-transform:uppercase;">HONDA CERT</span>
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;background:rgba(48,209,88,0.1);color:var(--green);border:1px solid rgba(48,209,88,0.2);letter-spacing:0.04em;text-transform:uppercase;">STATE FARM DRP</span>
+            </div>
+            <div style="padding:10px 12px;background:rgba(10,132,255,0.07);border:1px solid rgba(10,132,255,0.15);border-radius:7px;font-size:12px;color:var(--steel);margin-bottom:14px;">🛡️ Works with: <strong style="color:var(--white);">State Farm · GEICO · Progressive</strong></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <div style="background:var(--orange);color:var(--white);border-radius:7px;padding:10px;font-size:12px;font-weight:700;text-align:center;font-family:'Barlow',sans-serif;">📞 Call Now</div>
+              <div style="background:rgba(255,255,255,0.07);color:var(--silver);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:10px;font-size:12px;font-weight:600;text-align:center;font-family:'Barlow',sans-serif;">🗓 Book Estimate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="dark-section">
+  <div class="section-inner">
+    <div class="eyebrow">Verified Reviews</div>
+    <h2 class="section-h2" style="color:var(--white);">How the Review<br>System <em>Works</em></h2>
+    <p class="section-lead">Reviews are the most powerful part of your Carwise listing — and unlike any other platform, every review on Carwise is guaranteed to be from a real customer of yours.</p>
+
+    <div class="reviews-explainer">
+      <div class="review-flow">
+        <div class="review-step">
+          <div class="review-step-icon" style="background:rgba(255,107,0,0.12);">🔧</div>
+          <div>
+            <div class="review-step-title">Repair is completed in CCC ONE</div>
+            <p class="review-step-desc" style="color:var(--steel);">When you mark a repair job as complete in your CCC ONE system, this automatically triggers the review process. No extra step required from you.</p>
+          </div>
+        </div>
+        <div class="review-step">
+          <div class="review-step-icon" style="background:rgba(10,132,255,0.12);">📱</div>
+          <div>
+            <div class="review-step-title">Customer receives a review invitation</div>
+            <p class="review-step-desc" style="color:var(--steel);">The vehicle owner gets an automated email or text inviting them to share their experience on Carwise. Only the actual customer from that job record receives an invitation — no one else can leave a review for your shop.</p>
+          </div>
+        </div>
+        <div class="review-step">
+          <div class="review-step-icon" style="background:rgba(48,209,88,0.1);">⭐</div>
+          <div>
+            <div class="review-step-title">Review appears on your Carwise listing</div>
+            <p class="review-step-desc" style="color:var(--steel);">Once submitted, the review is published on your Carwise profile with a "Verified Repair Customer" badge. Drivers looking at your listing can see that every review comes from a confirmed, real customer — making your ratings more trustworthy than anything on Yelp or Google.</p>
+          </div>
+        </div>
+        <div class="review-step">
+          <div class="review-step-icon" style="background:rgba(255,214,10,0.1);">📊</div>
+          <div>
+            <div class="review-step-title">Your rating builds over time automatically</div>
+            <p class="review-step-desc" style="color:var(--steel);">Every job you complete is a potential new review. Your Carwise rating grows organically with every repair — no manual effort, no chasing customers for feedback on multiple platforms.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--steel);margin-bottom:16px;">Sample verified reviews</div>
+        <div class="sample-reviews">
+          <div class="sample-review">
+            <div class="sr-top">
+              <div class="sr-reviewer">
+                <div class="sr-avatar" style="background:linear-gradient(135deg,#FF6B00,#D45800);">JK</div>
+                <div>
+                  <div class="sr-name">James K.</div>
+                  <div class="sr-meta">State Farm · Repair completed Jan 14</div>
+                </div>
+              </div>
+              <div class="sr-stars">★★★★★</div>
+            </div>
+            <p class="sr-text">Brought my Accord in after a rear-end collision. The team communicated every step of the way and my car came out looking brand new. They handled everything with my insurance directly — I didn't have to make a single call.</p>
+            <div class="sr-verified">✅ Verified Repair Customer</div>
+          </div>
+
+          <div class="sample-review">
+            <div class="sr-top">
+              <div class="sr-reviewer">
+                <div class="sr-avatar" style="background:linear-gradient(135deg,#0A84FF,#065A8C);">ML</div>
+                <div>
+                  <div class="sr-name">Maria L.</div>
+                  <div class="sr-meta">GEICO · Repair completed Feb 2</div>
+                </div>
+              </div>
+              <div class="sr-stars">★★★★★</div>
+            </div>
+            <p class="sr-text">Fast, professional, and honest. They finished two days early and the paint match was perfect. I'll never go anywhere else for body work.</p>
+            <div class="sr-verified">✅ Verified Repair Customer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="join-section">
+  <div class="section-inner">
+    <div class="eyebrow" style="color:var(--orange);">Common Questions</div>
+    <h2 class="section-h2" style="color:var(--white);">Questions Shop<br>Owners <em>Ask Us</em></h2>
+
+    <div style="max-width:820px; margin-top:48px;">
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Does my shop have to pay anything to be on Carwise?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">No. If you're an active CCC ONE customer, activating your Carwise listing is included at no additional cost. Carwise is a built-in benefit of the CCC ONE platform — not a separate subscription or add-on fee.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            What if I'm not a CCC ONE customer?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Carwise is currently available exclusively to shops that use CCC ONE as their shop management platform. If you're not yet a CCC ONE customer, you'd need to sign up with CCC first. Contact CCC directly at cccis.com to learn about CCC ONE and how to get started. Once you're an active CCC ONE user, enabling Carwise takes just a few clicks.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can I control what information appears on my listing?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Your Carwise listing is automatically populated from your CCC ONE account data — so to update any information, you update it within CCC ONE and the change syncs to Carwise automatically. You cannot manually edit your Carwise listing directly, which is by design: this ensures that only accurate, system-verified information appears on your profile.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can I respond to reviews customers leave?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Yes. Shop owners can respond to reviews on their Carwise listing. Responding to reviews — especially mixed ones — is a great way to show potential customers that you're attentive and care about quality. You can access your reviews and manage responses through the Carwise shop portal, accessible via your CCC ONE account.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            How long does it take to go live after I enable Carwise in CCC ONE?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Your listing typically goes live on Carwise within 24 hours of enabling the feature in CCC ONE. In many cases it's faster than that. Once live, your shop will appear in search results for drivers in your area — and review collection begins automatically with your next completed repair.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Will my insurance carrier relationships show up on my listing?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Yes — if you have DRP or preferred shop relationships with insurance carriers that are registered in CCC ONE, those relationships will be reflected on your Carwise listing. When a driver searches Carwise and selects their insurance carrier, your shop will be highlighted as a preferred option for that carrier — giving you a visibility advantage for their policyholders.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can I turn off my Carwise listing if I want to pause?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Yes. You can disable your Carwise listing at any time by toggling it off in your CCC ONE settings. Your profile and all reviews are preserved — so if you turn it back on later, your history and ratings will still be there.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="activate" class="cta-section">
+  <div class="cta-inner">
+    <h2>Your Shop Should<br>Be on Carwise.</h2>
+    <p>Millions of drivers are searching for a trusted shop right now. If you're on CCC ONE, you're minutes away from being found — for free.</p>
+    <div class="cta-buttons">
+      <button class="btn-cta-white">Activate in CCC ONE Today →</button>
+      <button class="btn-cta-ghost">Not on CCC ONE Yet? Learn More</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div style="width:26px;height:26px;background:var(--orange);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;">🔵</div>
+    Carwise
+  </div>
+  <ul class="footer-links">
+    <li><a href="#">For Insurance Partners</a></li>
+    <li><a href="#">Find a Shop</a></li>
+    <li><a href="#">CCC ONE</a></li>
+    <li><a href="#">Support</a></li>
+  </ul>
+  <div class="footer-note">A CCC Intelligent Solutions Product · © 2025 CCC Intelligent Solutions Inc.</div>
+</footer>
+
+<script>
+  function toggleFaq(el) {
+    const answer = el.nextElementSibling;
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    if (!isOpen) {
+      el.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

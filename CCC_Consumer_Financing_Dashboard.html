@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC Consumer Financing Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy:        #0b1f4a;
+    --navy-mid:    #122360;
+    --navy-light:  #1a3278;
+    --blue:        #0057d9;
+    --blue-bright: #1a6dff;
+    --blue-pale:   #e8f0fe;
+    --teal:        #00b8a9;
+    --teal-pale:   #e0f7f5;
+    --orange:      #f07900;
+    --orange-pale: #fff3e6;
+    --green:       #00a86b;
+    --green-pale:  #e6f9f2;
+    --white:       #ffffff;
+    --off-white:   #f5f7fb;
+    --gray-50:     #f9fafc;
+    --gray-100:    #edf0f7;
+    --gray-200:    #d6dcec;
+    --gray-400:    #8e9ab5;
+    --gray-600:    #4f5e7b;
+    --gray-800:    #1e2d47;
+    --text:        #0e1e3d;
+    --shadow-sm:   0 1px 4px rgba(11,31,74,0.07);
+    --shadow-md:   0 4px 16px rgba(11,31,74,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--navy);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-mark {
+    background: var(--blue-bright); color: white;
+    font-weight: 700; font-size: 13px; padding: 6px 10px; letter-spacing: 0.04em;
+  }
+  .hdiv { width:1px; height:28px; background:rgba(255,255,255,0.14); }
+  .header-title { font-size: 14px; font-weight: 600; color: white; }
+  .header-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top:1px; }
+  .header-right { display:flex; align-items:center; gap:10px; }
+  .hbadge { font-size:10px; font-weight:500; letter-spacing:0.06em; color:rgba(255,255,255,0.6); background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); padding:4px 10px; text-transform:uppercase; }
+  .live { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--teal); font-weight:500; }
+  .live-dot { width:7px;height:7px;border-radius:50%;background:var(--teal);animation:blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── NAV ── */
+  .nav-strip {
+    background: var(--navy-mid);
+    border-bottom: 3px solid var(--blue-bright);
+    padding: 0 28px; display:flex;
+  }
+  .nav-item {
+    font-size:11px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;
+    color:rgba(255,255,255,0.4); padding:10px 16px;
+    border-bottom:3px solid transparent; margin-bottom:-3px;
+  }
+  .nav-item.active { color:white; border-bottom-color:var(--blue-bright); }
+
+  /* ── MAIN ── */
+  .main { padding:20px 28px 48px; }
+
+  .section-label {
+    font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gray-400); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--gray-200); }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom:20px; }
+  .kpi {
+    background:var(--white); border:1px solid var(--gray-200);
+    padding:14px 16px 12px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+    transition:box-shadow 0.15s;
+  }
+  .kpi:hover { box-shadow:var(--shadow-md); }
+  .kpi-accent { position:absolute; top:0; left:0; right:0; height:3px; }
+  .kpi-label { font-size:10px; font-weight:600; color:var(--gray-400); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:7px; }
+  .kpi-value { font-size:26px; font-weight:700; color:var(--text); line-height:1; letter-spacing:-0.02em; }
+  .kpi-sub { font-size:11px; color:var(--gray-400); margin-top:4px; }
+  .chip { display:inline-flex; align-items:center; font-size:10px; font-weight:600; padding:2px 7px; margin-top:5px; }
+  .chip-green { background:var(--green-pale); color:var(--green); }
+  .chip-orange { background:var(--orange-pale); color:var(--orange); }
+  .chip-blue { background:var(--blue-pale); color:var(--blue); }
+
+  /* ── CARD ── */
+  .card { background:var(--white); border:1px solid var(--gray-200); box-shadow:var(--shadow-sm); padding:18px 20px; }
+  .card-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--gray-100); }
+  .card-title { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; color:var(--gray-800); text-transform:uppercase; letter-spacing:0.04em; }
+  .ct-bar { width:3px; height:13px; flex-shrink:0; }
+  .card-tag { font-size:10px; font-weight:600; padding:3px 9px; letter-spacing:0.04em; }
+  .tag-blue { background:var(--blue-pale); color:var(--blue); }
+  .tag-teal { background:var(--teal-pale); color:#007a70; }
+  .tag-orange { background:var(--orange-pale); color:var(--orange); }
+
+  /* ── LAYOUTS ── */
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  .g2-wide { display:grid; grid-template-columns:1.6fr 1fr; gap:12px; margin-bottom:12px; }
+  .g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }
+  .full { margin-bottom:12px; }
+
+  /* ── MONTHLY TABLE ── */
+  .mtable { width:100%; border-collapse:collapse; }
+  .mtable th { font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.07em; padding:0 12px 9px; text-align:left; border-bottom:2px solid var(--gray-100); }
+  .mtable th.r { text-align:right; }
+  .mtable td { padding:9px 12px; border-bottom:1px solid var(--gray-100); font-size:12px; vertical-align:middle; }
+  .mtable tr:last-child td { border-bottom:none; }
+  .mtable tr:hover td { background:var(--gray-50); }
+  .td-r { text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12px; }
+  .td-bold { font-weight:700; color:var(--text); }
+  .bar-mini { display:flex; align-items:center; gap:6px; justify-content:flex-end; }
+  .btrack { width:50px; height:5px; background:var(--gray-100); border-radius:3px; overflow:hidden; }
+  .bfill { height:100%; border-radius:3px; }
+  .current-badge { font-size:9px; font-weight:600; padding:1px 5px; background:var(--blue-pale); color:var(--blue); margin-left:5px; }
+
+  /* ── ACTIVATION PANEL ── */
+  .act-big { font-size:44px; font-weight:700; color:var(--orange); line-height:1; letter-spacing:-0.03em; }
+  .act-bar-track { height:10px; background:var(--gray-100); border-radius:5px; overflow:hidden; margin:10px 0 4px; }
+  .act-bar-fill { height:100%; background:linear-gradient(90deg,var(--blue-bright),var(--teal)); border-radius:5px; }
+  .act-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .act-stat { background:var(--gray-50); border:1px solid var(--gray-200); padding:10px 12px; }
+  .act-stat-num { font-size:20px; font-weight:700; line-height:1; }
+  .act-stat-label { font-size:10px; color:var(--gray-400); margin-top:3px; text-transform:uppercase; letter-spacing:0.05em; }
+  .act-monthly { margin-top:14px; }
+  .act-monthly-title { font-size:10px; font-weight:700; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+  .amr { display:grid; grid-template-columns:72px 1fr 44px; gap:8px; align-items:center; padding:7px 0; border-bottom:1px solid var(--gray-100); }
+  .amr:last-child { border-bottom:none; }
+  .amr-name { font-size:11px; font-weight:600; color:var(--text); }
+  .amr-bar { position:relative; height:18px; background:var(--gray-100); border-radius:3px; overflow:hidden; }
+  .amr-enabled { position:absolute; top:0; left:0; height:100%; background:rgba(26,109,255,0.2); }
+  .amr-txn { position:absolute; top:0; left:0; height:100%; background:var(--teal); }
+  .amr-pct { font-size:11px; font-weight:700; text-align:right; }
+
+  /* ── TOP SHOPS ── */
+  .shop-row { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid var(--gray-100); }
+  .shop-row:last-child { border-bottom:none; }
+  .shop-rank { width:18px; font-size:10px; font-weight:700; color:var(--gray-400); text-align:right; flex-shrink:0; }
+  .shop-rank.t3 { color:var(--blue-bright); }
+  .shop-name { flex:1; font-size:11px; color:var(--gray-800); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .shop-btrack { width:60px; height:4px; background:var(--gray-100); border-radius:2px; overflow:hidden; flex-shrink:0; }
+  .shop-bfill { height:100%; background:var(--blue-bright); border-radius:2px; }
+  .shop-count { width:22px; font-size:12px; font-weight:700; text-align:right; flex-shrink:0; }
+
+  /* ── PROJ CALC ── */
+  .proj-banner { background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%); padding:14px 20px; }
+  .proj-banner-title { font-size:13px; font-weight:700; color:white; }
+  .proj-banner-sub { font-size:11px; color:rgba(255,255,255,0.45); margin-top:2px; }
+  .proj-body { padding:16px 20px 20px; }
+  .proj-controls { display:grid; grid-template-columns:repeat(3,1fr) auto; gap:10px; align-items:end; margin-bottom:14px; }
+  .ig label { display:block; font-size:10px; font-weight:600; color:var(--gray-600); letter-spacing:0.07em; text-transform:uppercase; margin-bottom:5px; }
+  .ig input { width:100%; border:1.5px solid var(--gray-200); background:var(--gray-50); color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:500; padding:8px 12px; outline:none; transition:border-color 0.15s,background 0.15s; }
+  .ig input:focus { border-color:var(--blue-bright); background:white; }
+  .calc-btn { background:var(--blue-bright); color:white; border:none; font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; padding:8px 18px; cursor:pointer; height:40px; transition:background 0.15s; white-space:nowrap; }
+  .calc-btn:hover { background:var(--blue); }
+  .proj-results { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .pr { background:var(--gray-50); border:1px solid var(--gray-200); padding:12px 14px; text-align:center; }
+  .pr:nth-child(1) { border-bottom:3px solid var(--blue-bright); }
+  .pr:nth-child(2) { border-bottom:3px solid var(--navy); }
+  .pr:nth-child(3) { border-bottom:3px solid var(--teal); }
+  .pr:nth-child(4) { border-bottom:3px solid #7c3aed; }
+  .pr-label { font-size:10px; font-weight:600; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:6px; }
+  .pr-value { font-size:22px; font-weight:700; color:var(--text); letter-spacing:-0.02em; }
+  .pr-sub { font-size:10px; color:var(--gray-400); margin-top:3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-mark">CCC</div>
+    <div class="hdiv"></div>
+    <div>
+      <div class="header-title">Consumer Financing Dashboard</div>
+      <div class="header-sub">CCC Intelligent Solutions</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live"><div class="live-dot"></div>Live</div>
+    <div class="hbadge">Through Feb 24, 2026</div>
+  </div>
+</div>
+
+<div class="nav-strip">
+  <div class="nav-item active">Overview</div>
+  <div class="nav-item">Enablement</div>
+  <div class="nav-item">Transactions</div>
+  <div class="nav-item">Projections</div>
+</div>
+
+<div class="main">
+
+  <!-- KPIs -->
+  <div class="section-label" style="margin-top:4px;">Key Metrics</div>
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-accent" style="background:var(--blue-bright)"></div>
+      <div class="kpi-label">Shops Enabled</div>
+      <div class="kpi-value">476</div>
+      <div class="kpi-sub">Consumer Financing go-lives</div>
+      <div class="chip chip-blue">Cumulative total</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-accent" style="background:var(--teal)"></div>
+      <div class="kpi-label">Shops Transacting</div>
+      <div class="kpi-value">182</div>
+      <div class="kpi-sub">At least 1 transaction</div>
+      <div class="chip chip-green">38.2% activation</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-accent" style="background:var(--orange)"></div>
+      <div class="kpi-label">Inactive Shops</div>
+      <div class="kpi-value">294</div>
+      <div class="kpi-sub">Enabled, never transacted</div>
+      <div class="chip chip-orange">↑ Opportunity</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-accent" style="background:#7c3aed"></div>
+      <div class="kpi-label">Total Transactions</div>
+      <div class="kpi-value">459</div>
+      <div class="kpi-sub">Oct 2025 – Feb 2026</div>
+      <div class="chip chip-blue">↑ 14× growth</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-accent" style="background:var(--green)"></div>
+      <div class="kpi-label">Total Volume</div>
+      <div class="kpi-value">$609K</div>
+      <div class="kpi-sub">$609,270 financed</div>
+      <div class="chip chip-green">↑ Strong ramp</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-accent" style="background:var(--navy)"></div>
+      <div class="kpi-label">Avg Transaction</div>
+      <div class="kpi-value">$1,327</div>
+      <div class="kpi-sub">TXN/enabled shop/mo: 0.31</div>
+    </div>
+  </div>
+
+  <!-- HERO CHART -->
+  <div class="section-label">Enablement vs. Transaction Activity — Monthly</div>
+  <div class="full card">
+    <div class="card-head">
+      <div class="card-title">
+        <div class="ct-bar" style="background:var(--blue-bright)"></div>
+        New Shops Enabled &amp; New Shops Transacting vs. Monthly Transactions
+      </div>
+      <div class="card-tag tag-blue">Oct 2025 – Feb 2026</div>
+    </div>
+    <canvas id="heroChart" height="110"></canvas>
+  </div>
+
+  <!-- CUMULATIVE + ACTIVATION -->
+  <div class="section-label">Cumulative Growth &amp; Activation Gap</div>
+  <div class="g2-wide">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><div class="ct-bar" style="background:var(--teal)"></div>Cumulative Shops — Enabled vs. Transacting</div>
+        <div class="card-tag tag-teal">Running Total</div>
+      </div>
+      <canvas id="cumulChart" height="190"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><div class="ct-bar" style="background:var(--orange)"></div>Activation Rate</div>
+        <div class="card-tag tag-orange">% Shops Transacting</div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;">
+          <div>
+            <div class="act-big">38.2%</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:3px;">of enabled shops have transacted</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:13px;font-weight:700;color:var(--orange)">294 shops</div>
+            <div style="font-size:10px;color:var(--gray-400)">enabled, never transacted</div>
+          </div>
+        </div>
+        <div class="act-bar-track"><div class="act-bar-fill" style="width:38.2%"></div></div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:10px;color:var(--blue-bright);font-weight:600;">182 Transacting</span>
+          <span style="font-size:10px;color:var(--gray-400);">476 Enabled</span>
+        </div>
+        <div class="act-stats">
+          <div class="act-stat"><div class="act-stat-num" style="color:var(--blue-bright)">476</div><div class="act-stat-label">Shops Enabled</div></div>
+          <div class="act-stat"><div class="act-stat-num" style="color:var(--teal)">182</div><div class="act-stat-label">Shops Transacting</div></div>
+          <div class="act-stat"><div class="act-stat-num" style="color:var(--orange)">294</div><div class="act-stat-label">Never Transacted</div></div>
+          <div class="act-stat"><div class="act-stat-num" style="color:var(--green)">0.31</div><div class="act-stat-label">TXN/Enabled Shop/Mo</div></div>
+        </div>
+        <div class="act-monthly">
+          <div class="act-monthly-title">Monthly Activation Rate</div>
+          <div id="actMonthRows"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTHLY TABLE + TOP SHOPS -->
+  <div class="section-label">Monthly Detail</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><div class="ct-bar" style="background:var(--navy)"></div>Month-by-Month Breakdown</div>
+        <div class="card-tag tag-blue">All Metrics</div>
+      </div>
+      <table class="mtable">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th class="r">New Enabled</th>
+            <th class="r">Cum. Enabled</th>
+            <th class="r">Monthly TXNs</th>
+            <th class="r">Volume</th>
+            <th class="r">TXN/Shop</th>
+          </tr>
+        </thead>
+        <tbody id="monthTableBody"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><div class="ct-bar" style="background:var(--orange)"></div>Top 10 Shops by Transaction Count</div>
+        <div class="card-tag tag-orange">Leaders</div>
+      </div>
+      <div id="topShops"></div>
+    </div>
+  </div>
+
+  <!-- TXN TREND + DISTRIBUTION -->
+  <div class="section-label">Transaction Trends</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><div class="ct-bar" style="background:#7c3aed"></div>Monthly Transactions &amp; Volume</div>
+        <div class="card-tag tag-blue">Dual Axis</div>
+      </div>
+      <canvas id="txnVolChart" height="185"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><div class="ct-bar" style="background:var(--gray-400)"></div>Transaction Value Distribution</div>
+        <div class="card-tag tag-blue">459 Transactions</div>
+      </div>
+      <canvas id="distChart" height="185"></canvas>
+    </div>
+  </div>
+
+  <!-- PROJECTION CALCULATOR -->
+  <div class="section-label">Projections</div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="proj-banner">
+      <div>
+        <div class="proj-banner-title">Shop Projection Calculator</div>
+        <div class="proj-banner-sub">Forecast transactions &amp; financed volume · defaults seeded from observed data</div>
+      </div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-controls">
+        <div class="ig"><label>Number of Shops</label><input type="number" id="shopCount" value="476" min="1"></div>
+        <div class="ig"><label>TXNs / Shop / Month</label><input type="number" id="txnRate" value="0.31" step="0.01" min="0.01"></div>
+        <div class="ig"><label>Avg Transaction ($)</label><input type="number" id="avgTxn" value="1327" min="1"></div>
+        <button class="calc-btn" onclick="calculate()">Calculate →</button>
+      </div>
+      <div class="proj-results">
+        <div class="pr"><div class="pr-label">Monthly Transactions</div><div class="pr-value" id="r-mt">—</div><div class="pr-sub">projected txns/month</div></div>
+        <div class="pr"><div class="pr-label">Monthly Volume</div><div class="pr-value" id="r-mv">—</div><div class="pr-sub">projected $/month</div></div>
+        <div class="pr"><div class="pr-label">Annual Transactions</div><div class="pr-value" id="r-at">—</div><div class="pr-sub">projected txns/year</div></div>
+        <div class="pr"><div class="pr-label">Annual Volume</div><div class="pr-value" id="r-av">—</div><div class="pr-sub">projected $/year</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────
+const months      = ['Oct 2025','Nov 2025','Dec 2025','Jan 2026','Feb 2026'];
+const newEnabled  = [110, 137, 64, 36, 120];
+const cumEnabled  = [119, 256, 320, 356, 476];
+const newTxnShops = [8,   34,  47,  49,  44];
+const cumTxnShops = [8,   42,  89,  138, 182];
+const monthlyTxns = [10,  50,  110, 143, 146];
+const monthlyVol  = [11924.79, 68614.83, 151121.65, 190027.44, 187581.84];
+const txnPerShop  = monthlyTxns.map((t,i) => +(t/cumEnabled[i]).toFixed(2));
+const actRate     = cumTxnShops.map((t,i) => +(t/cumEnabled[i]*100).toFixed(1));
+
+const topShopsData = [
+  { name:"Maurice's Auto Body, Inc.", count:14 },
+  { name:"Lindsay Collision Ctr of Manassas", count:13 },
+  { name:"FRANKS COLLISION CENTER INC", count:13 },
+  { name:"C.D.E. Collision Centers (57th)", count:11 },
+  { name:"One Twenty-Two Collision Fayetteville", count:11 },
+  { name:"Autobody Evolution - Catonsville #39", count:10 },
+  { name:"COUNTY LINE AUTO BODY", count:9 },
+  { name:"JOEL'S COLLISION CENTER", count:9 },
+  { name:"C.D.E. Collision Centers (Tinley Pk)", count:8 },
+  { name:"C.D.E. Collision Centers (Hammond)", count:8 },
+];
+
+// ── CHART HELPERS ─────────────────────────────────────────────────────
+const gc = 'rgba(214,220,236,0.6)';
+const tk = { color:'#8e9ab5', font:{ family:'IBM Plex Sans', size:11 } };
+
+// ── 1. HERO CHART ─────────────────────────────────────────────────────
+new Chart(document.getElementById('heroChart'), {
+  data: {
+    labels: months,
+    datasets: [
+      { type:'bar', label:'New Shops Enabled', data:newEnabled,
+        backgroundColor:'rgba(26,109,255,0.18)', borderColor:'#1a6dff', borderWidth:1.5, yAxisID:'y', order:3 },
+      { type:'bar', label:'New Shops Transacting', data:newTxnShops,
+        backgroundColor:'rgba(0,184,169,0.28)', borderColor:'#00b8a9', borderWidth:1.5, yAxisID:'y', order:2 },
+      { type:'line', label:'Monthly Transactions', data:monthlyTxns,
+        borderColor:'#f07900', backgroundColor:'rgba(240,121,0,0.06)', borderWidth:2.5,
+        pointBackgroundColor:'#f07900', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:5,
+        tension:0.4, fill:false, yAxisID:'y1', order:1 },
+    ]
+  },
+  options: {
+    responsive:true, interaction:{mode:'index',intersect:false},
+    plugins:{ legend:{ display:true, labels:{ color:'#4f5e7b', font:{family:'IBM Plex Sans',size:11}, boxWidth:11, padding:12 } } },
+    scales:{
+      x:{ grid:{color:gc}, ticks:tk },
+      y:{ grid:{color:gc}, ticks:tk, beginAtZero:true,
+          title:{display:true,text:'Shops',color:'#8e9ab5',font:{size:10,family:'IBM Plex Sans'}} },
+      y1:{ position:'right', grid:{drawOnChartArea:false}, beginAtZero:true,
+           ticks:{...tk, color:'#f07900'},
+           title:{display:true,text:'Transactions',color:'#f07900',font:{size:10,family:'IBM Plex Sans'}} }
+    }
+  }
+});
+
+// ── 2. CUMULATIVE CHART ───────────────────────────────────────────────
+new Chart(document.getElementById('cumulChart'), {
+  data: {
+    labels: months,
+    datasets: [
+      { type:'line', label:'Shops Enabled (Cumulative)', data:cumEnabled,
+        borderColor:'#1a6dff', backgroundColor:'rgba(26,109,255,0.08)', borderWidth:2.5,
+        pointBackgroundColor:'#1a6dff', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:5,
+        fill:true, tension:0.4 },
+      { type:'line', label:'Shops Transacting (Cumulative)', data:cumTxnShops,
+        borderColor:'#00b8a9', backgroundColor:'rgba(0,184,169,0.09)', borderWidth:2.5,
+        pointBackgroundColor:'#00b8a9', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:5,
+        fill:true, tension:0.4 },
+    ]
+  },
+  options: {
+    responsive:true, interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{ display:true, labels:{ color:'#4f5e7b', font:{family:'IBM Plex Sans',size:11}, boxWidth:11, padding:12 } },
+      tooltip:{
+        callbacks:{
+          afterBody: items => {
+            const i = items[0].dataIndex;
+            return [`Activation Rate: ${actRate[i]}%`, `Gap: ${cumEnabled[i]-cumTxnShops[i]} shops`];
+          }
+        }
+      }
+    },
+    scales:{
+      x:{ grid:{color:gc}, ticks:tk },
+      y:{ grid:{color:gc}, ticks:tk, beginAtZero:true }
+    }
+  }
+});
+
+// ── 3. ACTIVATION MONTH ROWS ──────────────────────────────────────────
+const maxCumE = Math.max(...cumEnabled);
+document.getElementById('actMonthRows').innerHTML = months.map((m,i) => {
+  const ePct = (cumEnabled[i]/maxCumE*100).toFixed(0);
+  const tPct = (cumTxnShops[i]/cumEnabled[i]*100).toFixed(0);
+  const color = actRate[i]>=50 ? '#00a86b' : actRate[i]>=30 ? '#f07900' : '#1a6dff';
+  return `<div class="amr">
+    <div class="amr-name">${m}</div>
+    <div>
+      <div class="amr-bar">
+        <div class="amr-enabled" style="width:${ePct}%"></div>
+        <div class="amr-txn" style="width:${(cumTxnShops[i]/maxCumE*100).toFixed(0)}%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:2px;">
+        <span style="font-size:9px;color:var(--gray-400)">${cumEnabled[i]}</span>
+        <span style="font-size:9px;color:var(--teal)">${cumTxnShops[i]}</span>
+      </div>
+    </div>
+    <div class="amr-pct" style="color:${color}">${actRate[i]}%</div>
+  </div>`;
+}).join('');
+
+// ── 4. MONTHLY TABLE ──────────────────────────────────────────────────
+const maxT = Math.max(...monthlyTxns);
+document.getElementById('monthTableBody').innerHTML = months.map((m,i) => {
+  const fw = Math.round(monthlyTxns[i]/maxT*100);
+  return `<tr>
+    <td class="td-bold">${m}${i===4?'<span class="current-badge">Current</span>':''}</td>
+    <td class="td-r td-bold" style="color:var(--blue-bright)">+${newEnabled[i]}</td>
+    <td class="td-r">${cumEnabled[i]}</td>
+    <td class="td-r">
+      <div class="bar-mini">
+        <div class="btrack"><div class="bfill" style="width:${fw}%;background:var(--blue-bright)"></div></div>
+        <span class="td-bold">${monthlyTxns[i]}</span>
+      </div>
+    </td>
+    <td class="td-r">$${(monthlyVol[i]/1000).toFixed(1)}K</td>
+    <td class="td-r" style="color:var(--gray-600)">${txnPerShop[i]}</td>
+  </tr>`;
+}).join('');
+
+// ── 5. TOP SHOPS ──────────────────────────────────────────────────────
+const maxC = topShopsData[0].count;
+document.getElementById('topShops').innerHTML = topShopsData.map((s,i) =>
+  `<div class="shop-row">
+    <div class="shop-rank ${i<3?'t3':''}">${i+1}</div>
+    <div class="shop-name">${s.name}</div>
+    <div class="shop-btrack"><div class="shop-bfill" style="width:${Math.round(s.count/maxC*100)}%"></div></div>
+    <div class="shop-count">${s.count}</div>
+  </div>`
+).join('');
+
+// ── 6. TXN + VOLUME ───────────────────────────────────────────────────
+new Chart(document.getElementById('txnVolChart'), {
+  data: {
+    labels: months,
+    datasets: [
+      { type:'bar', label:'Transactions', data:monthlyTxns,
+        backgroundColor:'rgba(0,87,217,0.2)', borderColor:'#0057d9', borderWidth:1.5, yAxisID:'y', order:2 },
+      { type:'line', label:'Volume ($)', data:monthlyVol,
+        borderColor:'#00b8a9', backgroundColor:'rgba(0,184,169,0.06)', borderWidth:2.5,
+        pointBackgroundColor:'#00b8a9', pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:5,
+        tension:0.4, fill:true, yAxisID:'y1', order:1 },
+    ]
+  },
+  options: {
+    responsive:true, interaction:{mode:'index',intersect:false},
+    plugins:{ legend:{ display:true, labels:{ color:'#4f5e7b', font:{family:'IBM Plex Sans',size:11}, boxWidth:11, padding:12 } } },
+    scales:{
+      x:{ grid:{color:gc}, ticks:tk },
+      y:{ grid:{color:gc}, ticks:tk, beginAtZero:true,
+          title:{display:true,text:'Transactions',color:'#8e9ab5',font:{size:10,family:'IBM Plex Sans'}} },
+      y1:{ position:'right', grid:{drawOnChartArea:false}, beginAtZero:true,
+           ticks:{...tk, callback:v=>'$'+(v/1000).toFixed(0)+'K', color:'#00b8a9'},
+           title:{display:true,text:'Volume ($)',color:'#00b8a9',font:{size:10,family:'IBM Plex Sans'}} }
+    }
+  }
+});
+
+// ── 7. DISTRIBUTION ───────────────────────────────────────────────────
+new Chart(document.getElementById('distChart'), {
+  type:'bar',
+  data:{
+    labels:['$0–500','$500–1K','$1K–2K','$2K–3K','$3K–5K','$5K+'],
+    datasets:[{ data:[63,118,142,68,46,22],
+      backgroundColor:['rgba(0,87,217,0.12)','rgba(0,87,217,0.22)','rgba(0,87,217,0.42)','rgba(0,87,217,0.32)','rgba(0,87,217,0.20)','rgba(0,87,217,0.12)'],
+      borderColor:'#0057d9', borderWidth:1.5 }]
+  },
+  options:{
+    responsive:true, plugins:{legend:{display:false}},
+    scales:{ x:{grid:{color:gc},ticks:tk}, y:{grid:{color:gc},ticks:tk,beginAtZero:true} }
+  }
+});
+
+// ── 8. CALCULATOR ─────────────────────────────────────────────────────
+function fmt(n){ return n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(1)+'K':'$'+n.toFixed(0); }
+function fmtN(n){ return n>=1000?(n/1000).toFixed(1)+'K':n.toLocaleString(); }
+function calculate(){
+  const s=parseFloat(document.getElementById('shopCount').value)||476;
+  const r=parseFloat(document.getElementById('txnRate').value)||0.31;
+  const a=parseFloat(document.getElementById('avgTxn').value)||1327;
+  const mt=Math.round(s*r), mv=mt*a;
+  document.getElementById('r-mt').textContent=fmtN(mt);
+  document.getElementById('r-mv').textContent=fmt(mv);
+  document.getElementById('r-at').textContent=fmtN(mt*12);
+  document.getElementById('r-av').textContent=fmt(mv*12);
+}
+['shopCount','txnRate','avgTxn'].forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+calculate();
+</script>
+</body>
+</html>

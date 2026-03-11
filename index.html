@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototype Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-hover: #21253a;
+      --border: #2a2d3e;
+      --text: #e8eaf0;
+      --text-muted: #8b8fa8;
+      --text-dim: #555872;
+      --accent: #6c63ff;
+      --accent-glow: rgba(108, 99, 255, 0.15);
+
+      --cat-dashboard: #3b82f6;
+      --cat-dashboard-bg: rgba(59, 130, 246, 0.1);
+      --cat-customer: #10b981;
+      --cat-customer-bg: rgba(16, 185, 129, 0.1);
+      --cat-reference: #f59e0b;
+      --cat-reference-bg: rgba(245, 158, 11, 0.1);
+      --cat-marketing: #ec4899;
+      --cat-marketing-bg: rgba(236, 72, 153, 0.1);
+      --cat-folder: #8b5cf6;
+      --cat-folder-bg: rgba(139, 92, 246, 0.12);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 24px 80px;
+    }
+
+    /* Header */
+    .header {
+      max-width: 960px;
+      margin: 0 auto 56px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-left: 48px;
+    }
+
+    /* Section */
+    .section {
+      max-width: 960px;
+      margin: 0 auto 48px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .count-badge {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+    }
+    .card:hover {
+      background: var(--surface-hover);
+      border-color: #3a3d55;
+      transform: translateY(-2px);
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .cat-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .arrow-icon {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-top: 1px;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .card:hover .arrow-icon {
+      color: var(--text-muted);
+      transform: translate(2px, -2px);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .card-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    /* Category colors */
+    .badge-dashboard { background: var(--cat-dashboard-bg); color: var(--cat-dashboard); }
+    .badge-customer  { background: var(--cat-customer-bg);  color: var(--cat-customer); }
+    .badge-reference { background: var(--cat-reference-bg); color: var(--cat-reference); }
+    .badge-marketing { background: var(--cat-marketing-bg); color: var(--cat-marketing); }
+
+    /* Folder card (special) */
+    .card-folder {
+      background: var(--cat-folder-bg);
+      border-color: rgba(139, 92, 246, 0.25);
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 24px;
+    }
+    .card-folder:hover {
+      background: rgba(139, 92, 246, 0.18);
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+    .folder-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .folder-body {
+      flex: 1;
+    }
+    .folder-body .card-title {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .folder-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(139, 92, 246, 0.15);
+      color: #a78bfa;
+      margin-bottom: 8px;
+    }
+    .folder-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .folder-chip {
+      font-size: 11px;
+      color: var(--text-dim);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .folder-arrow {
+      font-size: 20px;
+      color: #a78bfa;
+      transition: transform 0.15s;
+    }
+    .card-folder:hover .folder-arrow { transform: translateX(4px); }
+
+    /* Footer */
+    .footer {
+      max-width: 960px;
+      margin: 64px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-top">
+      <div class="logo-mark">P</div>
+      <h1>Prototype Library</h1>
+    </div>
+    <p class="subtitle">All active prototypes &amp; design explorations</p>
+  </header>
+
+  <!-- Folder Section -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-title">Collections</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid">
+      <a href="Carwise Redesign/index.html" class="card card-folder">
+        <span class="folder-icon">📁</span>
+        <div class="folder-body">
+          <span class="folder-badge">Collection · 3 files</span>
+          <div class="card-title">Carwise Redesign</div>
+          <div class="card-desc">Consumer and B2B landing pages exploring a redesigned Carwise brand — shop owners, insurance partners, and the core consumer experience.</div>
+          <div class="folder-chips">
+            <span class="folder-chip">Consumer Landing</span>
+            <span class="folder-chip">Insurance Partners</span>
+            <span class="folder-chip">Shop Owners</span>
+          </div>
+        </div>
+        <span class="folder-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Dashboards -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-title">Analytics Dashboards</span>
+      <div class="section-line"></div>
+      <span class="count-badge">3</span>
+    </div>
+    <div class="grid">
+
+      <a href="cccone-engage-dashboard_CCCONE.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-dashboard">Dashboard</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">CCC ONE Engage Dashboard</div>
+        <div class="card-desc">Enterprise platform dashboard with sidebar nav, KPI grid, funnel analysis, and source breakdown table for repair shops.</div>
+        <div class="card-meta">Updated Feb 24</div>
+      </a>
+
+      <a href="carwise-engage-dashboard.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-dashboard">Dashboard</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">Carwise Engage Dashboard</div>
+        <div class="card-desc">Shop performance metrics with funnel visualization, weekly trend chart, opportunity sources, and CCC Engage score gauge.</div>
+        <div class="card-meta">Updated Feb 23</div>
+      </a>
+
+      <a href="CCC_Consumer_Financing_Dashboard.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-dashboard">Dashboard</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">CCC Consumer Financing Dashboard</div>
+        <div class="card-desc">B2B financing metrics tracking shop enablement, transactions, activation rates, and projections via Chart.js visualizations.</div>
+        <div class="card-meta">Updated Mar 3</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Customer UIs -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-title">Customer-Facing UIs</span>
+      <div class="section-line"></div>
+      <span class="count-badge">3</span>
+    </div>
+    <div class="grid">
+
+      <a href="CarwiseE-repair-status.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-customer">Customer UI</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">Repair Status Tracker</div>
+        <div class="card-desc">End-to-end repair lifecycle UI with progress steps, photo gallery, messaging, payment card, and an integrated Claude AI modal.</div>
+        <div class="card-meta">Updated Mar 5</div>
+      </a>
+
+      <a href="carwise-ai-chat.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-customer">Customer UI</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">AI Shop Finder Chat</div>
+        <div class="card-desc">Conversational AI interface for finding auto body shops — stateful chat flow with quick replies and dynamic shop results.</div>
+        <div class="card-meta">Updated Mar 10</div>
+      </a>
+
+      <a href="tesla_repair_estimate.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-customer">Customer UI</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">Tesla Repair Estimate</div>
+        <div class="card-desc">Mobile-first estimate card for Tesla collision repair with cost breakdown, total loss risk warning, and Tesla-specific notes.</div>
+        <div class="card-meta">Updated Feb 25</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Reference -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-title">Reference &amp; Documentation</span>
+      <div class="section-line"></div>
+      <span class="count-badge">1</span>
+    </div>
+    <div class="grid">
+
+      <a href="ccc-updateplus-flow.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-reference">Reference</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">CCC UpdatePlus Message Flow</div>
+        <div class="card-desc">Visual flowchart of all 13 customer notification messages sent throughout the repair lifecycle, color-coded by trigger type.</div>
+        <div class="card-meta">Updated Mar 2</div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    Prototype Library · Personal design workspace
+  </footer>
+
+</body>
+</html>

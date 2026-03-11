@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCC UpdatePlus – Message Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ccc-blue: #0057B8;
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #dde3ec;
+    --border-light: #eaeff6;
+    --text: #111827;
+    --text-sub: #374151;
+    --text-muted: #6b7280;
+    --text-dim: #9ca3af;
+    --shop: #0057B8; --shop-bg: #e8f1fb;
+    --time: #0891b2; --time-bg: #e0f5f9;
+    --multi: #7c3aed; --multi-bg: #f3f0fd;
+    --feedback: #d97706; --feedback-bg: #fef3e2;
+  }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
+  .topbar { background: var(--ccc-blue); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .logo-mark { background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 16px; font-weight: 700; color: var(--ccc-blue); letter-spacing: -0.03em; }
+  .topbar-product { font-size: 13px; color: rgba(255,255,255,0.65); margin-left: 12px; }
+  .topbar-tag { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; }
+  .page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 28px 40px 24px; }
+  .page-header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 5px; }
+  .page-header p { font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: 640px; }
+  .legend-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 11px 40px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+  .legend-label { font-size: 11px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; color: var(--text-sub); }
+  .chip { padding: 2px 9px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+  .chip-shop { background: var(--shop-bg); color: var(--shop); }
+  .chip-time { background: var(--time-bg); color: var(--time); }
+  .chip-multi { background: var(--multi-bg); color: var(--multi); }
+  .chip-feedback { background: var(--feedback-bg); color: var(--feedback); }
+  .content { max-width: 840px; margin: 32px auto 0; padding: 0 40px; }
+  .section-group { margin-bottom: 36px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  .section-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-icon svg { width: 14px; height: 14px; }
+  .icon-shop { background: var(--shop-bg); color: var(--shop); }
+  .icon-feedback { background: var(--feedback-bg); color: var(--feedback); }
+  .section-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+  .section-note { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+  .flow { position: relative; display: flex; flex-direction: column; gap: 2px; }
+  .flow::before { content: ''; position: absolute; left: 19px; top: 28px; bottom: 28px; width: 2px; background: var(--border); z-index: 0; }
+  .msg { display: flex; align-items: flex-start; gap: 16px; padding: 5px 0; animation: fadeIn 0.4s ease both; }
+  .step-node { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; font-size: 13px; font-weight: 700; color: var(--text-muted); }
+  .node-shop { border-color: rgba(0,87,184,0.35); color: var(--shop); background: var(--shop-bg); }
+  .node-time { border-color: rgba(8,145,178,0.35); color: var(--time); background: var(--time-bg); }
+  .node-multi { border-color: rgba(124,58,237,0.25); color: var(--multi); background: var(--multi-bg); }
+  .node-feedback { border-color: rgba(217,119,6,0.35); color: var(--feedback); background: var(--feedback-bg); }
+  .pct { font-size: 9px; font-weight: 700; text-align: center; line-height: 1.1; }
+  .card { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 13px 18px; transition: box-shadow 0.15s, border-color 0.15s; }
+  .card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .card-shop:hover { border-color: rgba(0,87,184,0.3); }
+  .card-time:hover { border-color: rgba(8,145,178,0.3); }
+  .card-multi:hover { border-color: rgba(124,58,237,0.25); }
+  .card-feedback:hover { border-color: rgba(217,119,6,0.3); }
+  .card-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .badge { padding: 2px 9px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; flex-shrink: 0; }
+  .badge-shop { background: var(--shop-bg); color: var(--shop); }
+  .badge-time { background: var(--time-bg); color: var(--time); }
+  .badge-multi { background: var(--multi-bg); color: var(--multi); }
+  .badge-feedback { background: var(--feedback-bg); color: var(--feedback); }
+  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin-bottom: 8px; }
+  .usecase-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .usecase-pill { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); font-size: 11px; font-weight: 500; color: var(--text-sub); }
+  .uc-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .progress-wrap { margin: 7px 0 3px; }
+  .progress-track { height: 5px; background: var(--border-light); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--time), rgba(8,145,178,0.3)); animation: growBar 0.8s ease both 0.3s; }
+  .progress-legend { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); font-weight: 500; }
+  .progress-pct { color: var(--time); font-weight: 600; }
+  .trigger-line { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); margin-top: 5px; flex-wrap: wrap; }
+  .trigger-label { font-weight: 600; color: var(--text-muted); }
+  .connector { display: flex; align-items: center; justify-content: center; height: 30px; margin: 3px 0; padding-left: 56px; }
+  .connector-line { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px); }
+  .connector-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); padding: 0 12px; white-space: nowrap; }
+  .dashed-card { border-style: dashed !important; }
+  .warn-text { color: var(--shop); font-weight: 600; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes growBar { from { width: 0; } to { width: var(--w); } }
+  .msg:nth-child(1){animation-delay:.05s}.msg:nth-child(2){animation-delay:.1s}.msg:nth-child(3){animation-delay:.15s}
+  .msg:nth-child(4){animation-delay:.2s}.msg:nth-child(5){animation-delay:.25s}.msg:nth-child(6){animation-delay:.3s}
+  .msg:nth-child(7){animation-delay:.35s}.msg:nth-child(8){animation-delay:.4s}.msg:nth-child(9){animation-delay:.45s}
+  .msg:nth-child(10){animation-delay:.5s}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;">
+    <div class="logo-mark">CCC</div>
+    <span class="topbar-product">UpdatePlus &nbsp;·&nbsp; Customer Message Flow</span>
+  </div>
+  <span class="topbar-tag">Reference Guide</span>
+</div>
+
+<div class="page-header">
+  <h1>Repair Status Notification Flow</h1>
+  <p>All customer-facing messages sent throughout the collision repair lifecycle. Time-based messages auto-fire based on the percentage of time elapsed toward the promise date entered in CCC ONE. All other messages are triggered by shop actions or delivered automatically post-delivery.</p>
+</div>
+
+<div class="legend-bar">
+  <span class="legend-label">Trigger:</span>
+  <div class="legend-item"><span class="chip chip-shop">Shop-triggered</span> Shop takes action in CCC ONE</div>
+  <div class="legend-item"><span class="chip chip-time">Time-based</span> Auto-sent at % of promise date elapsed</div>
+  <div class="legend-item"><span class="chip chip-multi">Use-case driven</span> Timing depends on intake workflow</div>
+  <div class="legend-item"><span class="chip chip-feedback">Post-delivery</span> Auto-sent after vehicle-out</div>
+</div>
+
+<div class="content">
+
+  <!-- Repair Status Section -->
+  <div class="section-group">
+    <div class="section-header">
+      <div class="section-icon icon-shop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <span class="section-name">Repair Status Messages</span>
+      <span class="section-note">Active repair lifecycle · Messages 1–10</span>
+    </div>
+
+    <div class="flow">
+
+      <!-- 1. Welcome -->
+      <div class="msg">
+        <div class="step-node node-multi">1</div>
+        <div class="card card-multi">
+          <div class="card-header">
+            <span class="card-title">Welcome (Initial Message)</span>
+            <span class="badge badge-multi">Use-case driven</span>
+          </div>
+          <div class="card-desc">Introduces the customer to UpdatePlus and sets expectations for repair communications. Send timing varies depending on which intake workflow the shop uses.</div>
+          <div class="usecase-row">
+            <div class="usecase-pill"><div class="uc-dot" style="background:#0057B8;"></div>Online appointment &nbsp;→&nbsp; sent at time of scheduling</div>
+            <div class="usecase-pill"><div class="uc-dot" style="background:#0891b2;"></div>Photo estimate &nbsp;→&nbsp; sent at estimate submission</div>
+            <div class="usecase-pill"><div class="uc-dot" style="background:#7c3aed;"></div>Standard RO &nbsp;→&nbsp; sent when vehicle is dropped off</div>
+          </div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Varies by workflow — appointment, photo estimate, or vehicle-in event
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Vehicle-In -->
+      <div class="msg">
+        <div class="step-node node-shop">2</div>
+        <div class="card card-shop">
+          <div class="card-header">
+            <span class="card-title">Vehicle-In (Dropped Off)</span>
+            <span class="badge badge-shop">Shop-triggered</span>
+          </div>
+          <div class="card-desc">Confirms the vehicle has been received at the facility and repair work is beginning. Provides reassurance and sets the repair in motion for the customer.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Shop marks vehicle as checked in / dropped off in CCC ONE
+          </div>
+        </div>
+      </div>
+
+      <!-- Connector: time-based -->
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-label" style="color:var(--time);">⏱ Time-based — % of promise date elapsed</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- 3. 0-24% -->
+      <div class="msg">
+        <div class="step-node node-time"><span class="pct">0–24%</span></div>
+        <div class="card card-time">
+          <div class="card-header">
+            <span class="card-title">0–24% of Repair Cycle</span>
+            <span class="badge badge-time">Time-based</span>
+          </div>
+          <div class="card-desc">Early-stage update bridging the communication gap shortly after drop-off. Confirms work has begun and the timeline is on track.</div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="--w:24%;"></div></div>
+            <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 24% elapsed</span><span>Promise date</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 25-49% -->
+      <div class="msg">
+        <div class="step-node node-time"><span class="pct">25–49%</span></div>
+        <div class="card card-time">
+          <div class="card-header">
+            <span class="card-title">25–49% of Repair Cycle</span>
+            <span class="badge badge-time">Time-based</span>
+          </div>
+          <div class="card-desc">Mid-early check-in as the repair approaches the halfway point. Reduces inbound "where's my car?" calls during the active repair phase.</div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="--w:49%;"></div></div>
+            <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 49% elapsed</span><span>Promise date</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 50-74% #1 -->
+      <div class="msg">
+        <div class="step-node node-time"><span class="pct">50–74%</span></div>
+        <div class="card card-time">
+          <div class="card-header">
+            <span class="card-title">50–74% of Repair Cycle – Message 1</span>
+            <span class="badge badge-time">Time-based</span>
+          </div>
+          <div class="card-desc">First of two messages in the mid-repair window. Work is meaningfully underway — body work, painting, or reassembly in progress.</div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="--w:60%;"></div></div>
+            <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 60% elapsed</span><span>Promise date</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 50-74% #2 -->
+      <div class="msg">
+        <div class="step-node node-time"><span class="pct">50–74%</span></div>
+        <div class="card card-time">
+          <div class="card-header">
+            <span class="card-title">50–74% of Repair Cycle – Message 2</span>
+            <span class="badge badge-time">Time-based</span>
+          </div>
+          <div class="card-desc">Reinforcing second message in this window, sustaining customer engagement through the longest phase of the repair before nearing completion.</div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="--w:72%;"></div></div>
+            <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 72% elapsed</span><span>Promise date</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. 75-99% -->
+      <div class="msg">
+        <div class="step-node node-time"><span class="pct">75–99%</span></div>
+        <div class="card card-time">
+          <div class="card-header">
+            <span class="card-title">75–99% of Repair Cycle</span>
+            <span class="badge badge-time">Time-based</span>
+          </div>
+          <div class="card-desc">Near-completion alert. Vehicle is in final QC, detailing, or reassembly. Prepares the customer for imminent pickup contact from the shop.</div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" style="--w:87%;"></div></div>
+            <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 87% elapsed</span><span>Promise date</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connector: back to shop -->
+      <div class="connector">
+        <div class="connector-line"></div>
+        <div class="connector-label">Shop-triggered events</div>
+        <div class="connector-line"></div>
+      </div>
+
+      <!-- 8. Repair Completed -->
+      <div class="msg">
+        <div class="step-node node-shop">8</div>
+        <div class="card card-shop">
+          <div class="card-header">
+            <span class="card-title">Repair Completed</span>
+            <span class="badge badge-shop">Shop-triggered</span>
+          </div>
+          <div class="card-desc">Notifies the customer that repairs are finished and the vehicle is ready for pickup. Typically the most anticipated message in the entire sequence.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Shop marks repair as complete in CCC ONE
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Vehicle Out -->
+      <div class="msg">
+        <div class="step-node node-shop">9</div>
+        <div class="card card-shop">
+          <div class="card-header">
+            <span class="card-title">Vehicle Out</span>
+            <span class="badge badge-shop">Shop-triggered</span>
+          </div>
+          <div class="card-desc">Confirms the vehicle has been returned to the customer. Closes the active repair loop and initiates the post-delivery feedback sequence.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Shop marks vehicle as delivered / out in CCC ONE
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Promise Date (dashed / conditional) -->
+      <div class="msg">
+        <div class="step-node node-shop" style="font-size:11px;">DATE</div>
+        <div class="card card-shop dashed-card">
+          <div class="card-header">
+            <span class="card-title">Promise Date Update &nbsp;<span style="font-size:11px;font-weight:400;color:var(--text-dim);">(conditional — sent as needed)</span></span>
+            <span class="badge badge-shop">Shop-triggered</span>
+          </div>
+          <div class="card-desc">Sent whenever the shop changes the estimated completion date in CCC ONE. Critical for proactive expectation management — prevents customer frustration from unannounced schedule changes.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Shop modifies the promise / delivery date in CCC ONE &nbsp;·&nbsp;
+            <span class="warn-text">⚠ Recalculates all time-based message windows</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /flow -->
+  </div>
+
+  <!-- Post-Delivery Section -->
+  <div class="section-group">
+    <div class="section-header">
+      <div class="section-icon icon-feedback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <span class="section-name">Post-Delivery &amp; Feedback</span>
+      <span class="section-note">Auto-sent after vehicle-out · Messages 11–13</span>
+    </div>
+
+    <div class="flow">
+
+      <!-- 11. Post Delivery -->
+      <div class="msg">
+        <div class="step-node node-feedback">11</div>
+        <div class="card card-feedback">
+          <div class="card-header">
+            <span class="card-title">Post Delivery Feedback</span>
+            <span class="badge badge-feedback">Post-delivery</span>
+          </div>
+          <div class="card-desc">General repair experience survey capturing overall customer satisfaction. Provides the shop with actionable quality feedback across all repair orders.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Auto-sent after vehicle-out event (delayed send) · All ROs
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Insurance CSI -->
+      <div class="msg">
+        <div class="step-node node-feedback">12</div>
+        <div class="card card-feedback">
+          <div class="card-header">
+            <span class="card-title">Insurance CSI</span>
+            <span class="badge badge-feedback">Post-delivery</span>
+          </div>
+          <div class="card-desc">Customer Satisfaction Index survey focused on the insurance claim experience. Results feed directly into insurer scorecards and DRP performance metrics for the shop.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Auto-sent after vehicle-out · Insurance-related ROs only
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. Shop CSI -->
+      <div class="msg">
+        <div class="step-node node-feedback">13</div>
+        <div class="card card-feedback">
+          <div class="card-header">
+            <span class="card-title">Shop CSI</span>
+            <span class="badge badge-feedback">Post-delivery</span>
+          </div>
+          <div class="card-desc">Shop-specific satisfaction survey measuring repair quality, communication, and overall experience. Helps shops benchmark performance and identify areas for improvement.</div>
+          <div class="trigger-line">
+            <span class="trigger-label">Trigger:</span>&nbsp;Auto-sent after vehicle-out · All ROs
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /flow -->
+  </div>
+
+</div><!-- /content -->
+</body>
+</html>

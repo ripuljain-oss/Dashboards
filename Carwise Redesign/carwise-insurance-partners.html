@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carwise for Insurance Partners — Powered by CCC ONE</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D1523;
+    --ink-mid: #2C3E57;
+    --ink-light: #6B7E96;
+    --ink-faint: #B8C6D6;
+    --blue: #0A7FC4;
+    --blue-dark: #065A8C;
+    --blue-deeper: #03304D;
+    --blue-pale: #EBF5FC;
+    --teal: #0CA698;
+    --teal-light: #E6F7F6;
+    --amber: #E8960A;
+    --amber-light: #FEF6E4;
+    --white: #FFFFFF;
+    --off-white: #F5F8FB;
+    --border: #DDE6EF;
+    --ccc-blue: #003F7D;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Epilogue', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-logo .logo-mark {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-pill {
+    background: var(--blue);
+    color: var(--white) !important;
+    padding: 9px 20px;
+    border-radius: 100px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-pill:hover { background: var(--blue-dark) !important; color: var(--white) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    padding-top: 64px;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(10,127,196,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,127,196,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(10,127,196,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(12,166,152,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 64px 80px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 28px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--teal);
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 58px;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-lead {
+    font-size: 17px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.58);
+    font-weight: 300;
+    max-width: 520px;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .btn-main {
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 15px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Epilogue', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  .btn-main:hover { background: #0A8F86; transform: translateY(-2px); }
+
+  .btn-ghost {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    font-weight: 400;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .btn-ghost:hover { color: rgba(255,255,255,0.9); }
+
+  /* Hero Right Card */
+  .hero-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+  }
+
+  .hero-card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 20px;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+
+  .stat-row-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .stat-row-val {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .stat-row-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    line-height: 1.4;
+  }
+
+  .ccc-badge {
+    margin-top: 24px;
+    padding: 14px 16px;
+    background: rgba(0,63,125,0.3);
+    border: 1px solid rgba(0,63,125,0.5);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ccc-badge-icon {
+    width: 36px; height: 36px;
+    background: var(--ccc-blue);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .ccc-badge-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+
+  .ccc-badge-text strong {
+    color: rgba(255,255,255,0.95);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+  }
+
+  /* ── SECTION SHARED ── */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 64px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px; height: 2px;
+    background: var(--blue);
+  }
+
+  .section-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 44px;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .section-h2 em { font-style: italic; color: var(--blue); }
+
+  .section-lead {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink-light);
+    font-weight: 300;
+    max-width: 600px;
+    margin-bottom: 64px;
+  }
+
+  /* ── WHAT IS CARWISE ── */
+  .what-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .what-cell {
+    background: var(--white);
+    padding: 40px;
+    transition: background 0.2s;
+  }
+
+  .what-cell:hover { background: var(--off-white); }
+
+  .what-cell.dark {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .what-cell.dark:hover { background: var(--ink-mid); }
+
+  .what-cell.accent {
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  .what-cell.accent:hover { background: var(--blue-dark); }
+
+  .cell-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .cell-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .cell-body {
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 300;
+    color: var(--ink-light);
+  }
+
+  .what-cell.dark .cell-body { color: rgba(255,255,255,0.6); }
+  .what-cell.dark .cell-title { color: var(--white); }
+  .what-cell.accent .cell-body { color: rgba(255,255,255,0.75); }
+  .what-cell.accent .cell-title { color: var(--white); }
+
+  /* ── DATA SOURCING (CCC ONE SECTION) ── */
+  .data-section {
+    background: var(--off-white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 64px;
+  }
+
+  .pipeline {
+    position: relative;
+    margin-top: 64px;
+  }
+
+  .pipeline-track {
+    position: absolute;
+    top: 44px;
+    left: 44px;
+    right: 44px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+    z-index: 0;
+  }
+
+  .pipeline-nodes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pipeline-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .node-circle {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin-bottom: 24px;
+    position: relative;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px var(--blue);
+  }
+
+  .node-circle.teal { box-shadow: 0 0 0 2px var(--teal); }
+
+  .pipeline-node:nth-child(1) .node-circle { background: var(--blue-pale); }
+  .pipeline-node:nth-child(2) .node-circle { background: var(--teal-light); }
+  .pipeline-node:nth-child(3) .node-circle { background: var(--amber-light); }
+  .pipeline-node:nth-child(4) .node-circle { background: #F0F5FF; }
+
+  .node-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+
+  .node-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .node-desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* CCC ONE Explainer */
+  .ccc-explainer {
+    margin-top: 72px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ccc-left {
+    padding: 48px;
+    border-right: 1px solid var(--border);
+  }
+
+  .ccc-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .ccc-logo-box {
+    width: 52px; height: 52px;
+    background: var(--ccc-blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    font-family: 'Epilogue', sans-serif;
+  }
+
+  .ccc-logo-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+  }
+
+  .ccc-logo-text span {
+    font-family: 'Epilogue', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--ink-light);
+    display: block;
+    margin-top: 1px;
+  }
+
+  .ccc-body {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink-mid);
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+
+  .ccc-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .ccc-bullet-dot {
+    width: 20px; height: 20px;
+    background: var(--blue-pale);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: var(--blue);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .ccc-bullet-text {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .ccc-right {
+    padding: 48px;
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .data-integrity-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .data-integrity-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 36px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .integrity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .integrity-item:last-child { border-bottom: none; }
+
+  .integrity-icon {
+    width: 38px; height: 38px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .integrity-icon.teal { background: rgba(12,166,152,0.15); }
+  .integrity-icon.blue { background: rgba(10,127,196,0.15); }
+  .integrity-icon.amber { background: rgba(232,150,10,0.15); }
+
+  .integrity-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 4px;
+  }
+
+  .integrity-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* ── HOW SHOPS APPEAR ── */
+  .shop-flow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 20px;
+    position: relative;
+  }
+
+  .flow-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .flow-num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--blue);
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+  }
+
+  .flow-content {
+    padding: 0 0 40px;
+  }
+
+  .flow-title {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .flow-desc {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .flow-tag {
+    display: inline-block;
+    background: var(--blue-pale);
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* Shop card mock */
+  .shop-card-mock {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+  }
+
+  .mock-header {
+    background: linear-gradient(135deg, var(--ink), var(--blue-dark));
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .mock-body { padding: 24px; }
+
+  .mock-shop-name {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .mock-addr {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 16px;
+  }
+
+  .mock-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .mock-stars { color: #F59E0B; font-size: 14px; }
+
+  .mock-rating-num {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .mock-review-count {
+    font-size: 12px;
+    color: var(--ink-light);
+  }
+
+  .mock-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #15803D;
+    background: #DCFCE7;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+
+  .mock-divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .mock-data-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .mock-data-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .mock-data-label { font-size: 11px; color: var(--ink-light); margin-bottom: 1px; }
+  .mock-data-val { font-size: 13px; font-weight: 500; color: var(--ink); }
+
+  .mock-source-strip {
+    margin: 0 -24px -24px;
+    padding: 14px 24px;
+    background: var(--off-white);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mock-source-badge {
+    background: var(--ccc-blue);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .mock-source-text {
+    font-size: 11px;
+    color: var(--ink-light);
+  }
+
+  /* ── PARTNER VALUE ── */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .value-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.25s;
+  }
+
+  .value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.09);
+    border-color: var(--blue);
+  }
+
+  .value-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .value-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .value-body {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* ── FAQ ── */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .faq-item {
+    background: var(--white);
+  }
+
+  .faq-q {
+    padding: 22px 28px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .faq-q:hover { background: var(--off-white); }
+
+  .faq-q.open { background: var(--blue-pale); color: var(--blue); }
+
+  .faq-chevron {
+    font-size: 18px;
+    transition: transform 0.2s;
+    color: var(--ink-faint);
+  }
+
+  .faq-q.open .faq-chevron { transform: rotate(180deg); color: var(--blue); }
+
+  .faq-a {
+    display: none;
+    padding: 0 28px 24px;
+    font-size: 15px;
+    color: var(--ink-light);
+    line-height: 1.75;
+    font-weight: 300;
+    background: var(--blue-pale);
+  }
+
+  .faq-a.open { display: block; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--blue-deeper) 50%, var(--blue-dark) 100%);
+    padding: 96px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(10,127,196,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,127,196,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .cta-inner {
+    position: relative;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .cta-inner h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .cta-inner h2 em { font-style: italic; color: var(--teal); }
+
+  .cta-inner p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+  }
+
+  .btn-cta-main {
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Epilogue', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-cta-main:hover { background: #0A8F86; transform: translateY(-2px); }
+
+  .btn-cta-ghost {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Epilogue', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-cta-ghost:hover { background: rgba(255,255,255,0.14); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    padding: 40px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 300;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-inner > * {
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-inner > *:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">🔵</div>
+    Carwise
+  </a>
+  <ul class="nav-links">
+    <li><a href="#what">What is Carwise</a></li>
+    <li><a href="#data">Data & Sourcing</a></li>
+    <li><a href="#how">How Shops Appear</a></li>
+    <li><a href="#value">Partner Benefits</a></li>
+    <li><a href="#contact" class="nav-pill">Partner With Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">For Insurance Partners</div>
+      <h1>The Collision<br>Repair Network<br>Insurers <em>Trust.</em></h1>
+      <p class="hero-lead">Carwise connects drivers with verified auto body shops — powered by real-time shop data sourced directly through CCC ONE, the industry's leading collision repair management platform.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-main">Request a Partnership Meeting →</a>
+        <a href="#what" class="btn-ghost">Learn how it works ↓</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-label">Carwise by the Numbers</div>
+      <div class="stat-row">
+        <div class="stat-row-icon" style="background:rgba(10,127,196,0.15);">🏪</div>
+        <div>
+          <div class="stat-row-val">28,000+</div>
+          <div class="stat-row-desc">Verified body shops live on Carwise — all CCC ONE customers</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-icon" style="background:rgba(12,166,152,0.15);">👥</div>
+        <div>
+          <div class="stat-row-val">4.2M</div>
+          <div class="stat-row-desc">Drivers who have used Carwise to find a repair shop</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-row-icon" style="background:rgba(232,150,10,0.15);">⭐</div>
+        <div>
+          <div class="stat-row-val">2.1M</div>
+          <div class="stat-row-desc">Verified reviews collected from real repair customers only</div>
+        </div>
+      </div>
+      <div class="ccc-badge">
+        <div class="ccc-badge-icon">CCC</div>
+        <div class="ccc-badge-text">
+          <strong>Powered by CCC ONE</strong>
+          All shop data flows directly from the body shop's own CCC ONE system — no manual entry, no third-party aggregation.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS CARWISE -->
+<section id="what">
+  <div class="section">
+    <div class="eyebrow">Platform Overview</div>
+    <h2 class="section-h2">What is <em>Carwise?</em></h2>
+    <p class="section-lead">Carwise is a consumer-facing shop-finder and review platform built by CCC Intelligent Solutions — designed to help drivers confidently choose a trusted auto body repair shop after a collision.</p>
+
+    <div class="what-grid">
+      <div class="what-cell">
+        <span class="cell-icon">🔍</span>
+        <div class="cell-title">A Trusted Shop Discovery Platform</div>
+        <p class="cell-body">Carwise helps millions of drivers find, compare, and contact auto body shops near them. It is not a general business directory — every shop on Carwise is a verified collision repair professional operating within the CCC ecosystem.</p>
+      </div>
+      <div class="what-cell dark">
+        <span class="cell-icon">🛡️</span>
+        <div class="cell-title">Built on Verified Data — Not Self-Reported Listings</div>
+        <p class="cell-body">Unlike Yelp or Google, shops do not create their own profiles or write their own descriptions. Every data point — from shop name and hours to certifications and capacity — is pulled directly from the shop's CCC ONE management system.</p>
+      </div>
+      <div class="what-cell accent">
+        <span class="cell-icon">🤝</span>
+        <div class="cell-title">Your Network, Surfaced to Consumers</div>
+        <p class="cell-body">For insurance carriers, Carwise is a powerful channel to surface your preferred and direct-repair program (DRP) shops to policyholders at exactly the moment they need one — right after an accident, before they call a competitor's shop.</p>
+      </div>
+      <div class="what-cell">
+        <span class="cell-icon">📋</span>
+        <div class="cell-title">A Natural Extension of the Claims Journey</div>
+        <p class="cell-body">Carwise sits at the intersection of the consumer and the shop — surfacing the right shop, at the right moment, with the right information. When integrated with your carrier workflow, it can accelerate claim initiation and reduce friction for both adjusters and policyholders.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA & SOURCING -->
+<section id="data" class="data-section">
+  <div class="data-inner">
+    <div class="eyebrow">Data Integrity & Sourcing</div>
+    <h2 class="section-h2">How Shop Data Gets<br>onto <em>Carwise</em></h2>
+    <p class="section-lead">Every shop on Carwise is there because they are a CCC ONE customer who has opted in to share their data. Nothing is manually curated, scraped, or assumed.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-track"></div>
+      <div class="pipeline-nodes">
+        <div class="pipeline-node">
+          <div class="node-circle">🏪</div>
+          <div class="node-label">Step 01</div>
+          <div class="node-title">Body Shop Uses CCC ONE</div>
+          <p class="node-desc">The shop is an active CCC ONE customer — using it daily to manage estimates, repairs, and customer communication.</p>
+        </div>
+        <div class="pipeline-node">
+          <div class="node-circle teal">✅</div>
+          <div class="node-label">Step 02</div>
+          <div class="node-title">Shop Enables Carwise</div>
+          <p class="node-desc">The shop opts in through CCC ONE to activate their Carwise listing. No third-party registration required — it's built in.</p>
+        </div>
+        <div class="pipeline-node">
+          <div class="node-circle">🔄</div>
+          <div class="node-label">Step 03</div>
+          <div class="node-title">Data Flows Automatically</div>
+          <p class="node-desc">Shop profile data — hours, certifications, specializations, contact info, and more — syncs automatically from CCC ONE to Carwise.</p>
+        </div>
+        <div class="pipeline-node">
+          <div class="node-circle teal">🌐</div>
+          <div class="node-label">Step 04</div>
+          <div class="node-title">Live on Carwise</div>
+          <p class="node-desc">The shop appears in Carwise search results, visible to consumers and insurance-routed searches. All data stays in sync with CCC ONE.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CCC ONE Explainer Box -->
+    <div class="ccc-explainer">
+      <div class="ccc-left">
+        <div class="ccc-logo-area">
+          <div class="ccc-logo-box">CCC</div>
+          <div class="ccc-logo-text">
+            CCC ONE
+            <span>Collision Repair Management Platform</span>
+          </div>
+        </div>
+        <p class="ccc-body">CCC ONE is the collision repair industry's most widely adopted management platform, used by body shops across the United States to run their entire operation — from estimates and parts ordering to insurer communication and repair tracking.</p>
+        <p class="ccc-body">Carwise is a consumer product built on top of CCC's data network. Because shop data originates in CCC ONE, it reflects the shop's actual operational reality — not a marketing page they built themselves.</p>
+
+        <div class="ccc-bullet">
+          <div class="ccc-bullet-dot">✓</div>
+          <div class="ccc-bullet-text">Shops already use CCC ONE daily — enabling Carwise is a single opt-in, not a new integration</div>
+        </div>
+        <div class="ccc-bullet">
+          <div class="ccc-bullet-dot">✓</div>
+          <div class="ccc-bullet-text">All profile information is sourced from production shop data — hours, certs, and contacts stay current automatically</div>
+        </div>
+        <div class="ccc-bullet">
+          <div class="ccc-bullet-dot">✓</div>
+          <div class="ccc-bullet-text">Reviews are triggered after verified repair completions logged in CCC ONE — not open to public posting</div>
+        </div>
+        <div class="ccc-bullet">
+          <div class="ccc-bullet-dot">✓</div>
+          <div class="ccc-bullet-text">Shops cannot manipulate their own listing content — data integrity is enforced at the platform level</div>
+        </div>
+      </div>
+
+      <div class="ccc-right">
+        <div class="data-integrity-title">Why This Matters to Insurers</div>
+        <p class="data-integrity-sub">When you recommend a Carwise shop to a policyholder, you're recommending a shop whose data you can trust — not a self-reported listing.</p>
+
+        <div class="integrity-item">
+          <div class="integrity-icon teal">🔒</div>
+          <div>
+            <div class="integrity-title">No Fake or Inflated Profiles</div>
+            <div class="integrity-desc">Shop data comes from operational systems, not marketing intent. A shop can't list certifications they don't have or hours they don't keep.</div>
+          </div>
+        </div>
+        <div class="integrity-item">
+          <div class="integrity-icon blue">📊</div>
+          <div>
+            <div class="integrity-title">Reviews Tied to Real Repairs</div>
+            <div class="integrity-desc">Review requests are triggered only after a repair is marked complete in CCC ONE — customers who didn't use the shop cannot leave a review.</div>
+          </div>
+        </div>
+        <div class="integrity-item">
+          <div class="integrity-icon amber">🔄</div>
+          <div>
+            <div class="integrity-title">Always Current</div>
+            <div class="integrity-desc">Because data syncs from CCC ONE, shop info updates automatically as the shop updates their own system — no stale listings.</div>
+          </div>
+        </div>
+        <div class="integrity-item">
+          <div class="integrity-icon teal">🏆</div>
+          <div>
+            <div class="integrity-title">DRP Alignment</div>
+            <div class="integrity-desc">Carrier-preferred shop status can be surfaced directly in Carwise search results, giving your DRP shops a visible advantage to your policyholders.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW SHOPS APPEAR -->
+<section id="how">
+  <div class="section">
+    <div class="eyebrow">Shop Eligibility & Appearance</div>
+    <h2 class="section-h2">Which Shops Appear<br>on <em>Carwise?</em></h2>
+    <p class="section-lead">Carwise is not an open directory. Shops appear only through a deliberate, CCC ONE-enabled opt-in process — ensuring every listing represents a real, active collision repair business.</p>
+
+    <div class="shop-flow">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-content">
+            <span class="flow-tag">Prerequisite</span>
+            <div class="flow-title">Must Be an Active CCC ONE Customer</div>
+            <p class="flow-desc">Only body shops actively using CCC ONE as their management platform are eligible to appear on Carwise. This ensures every shop has a real, verified operational footprint — not just a listing someone created.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-content">
+            <span class="flow-tag">Opt-In Required</span>
+            <div class="flow-title">Shop Chooses to Enable Carwise</div>
+            <p class="flow-desc">Within CCC ONE, the shop actively enables their Carwise listing. This is a deliberate choice — shops are not automatically listed. Enabling the feature gives Carwise permission to publish and sync their profile data.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-content">
+            <span class="flow-tag">Automated</span>
+            <div class="flow-title">Profile Populates from CCC ONE Data</div>
+            <p class="flow-desc">Once enabled, the shop's Carwise listing is automatically populated with data directly from their CCC ONE system: shop name, address, hours of operation, certifications (OEM, I-CAR, etc.), insurance relationships, and contact details.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-content">
+            <span class="flow-tag">Ongoing</span>
+            <div class="flow-title">Reviews Collected After Verified Repairs</div>
+            <p class="flow-desc">After a repair is completed and logged in CCC ONE, Carwise automatically sends a review request to the vehicle owner. Only customers with completed repairs in the system can submit reviews — eliminating fake or unverified feedback.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mock Shop Card -->
+      <div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:16px;">Sample Carwise Shop Listing</div>
+        <div class="shop-card-mock">
+          <div class="mock-header">
+            <div class="mock-dot" style="background:#FF605C;"></div>
+            <div class="mock-dot" style="background:#FFBD44;"></div>
+            <div class="mock-dot" style="background:#00CA4E;"></div>
+            <span style="margin-left:8px; color:rgba(255,255,255,0.4); font-size:11px;">carwise.com/shop/midwest-collision</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shop-name">Midwest Collision Center</div>
+            <div class="mock-addr">📍 1847 W. Fulton St, Chicago, IL 60612 · Open until 6pm</div>
+
+            <div class="mock-rating-row">
+              <span class="mock-stars">★★★★★</span>
+              <span class="mock-rating-num">4.9</span>
+              <span class="mock-review-count">· 312 verified reviews</span>
+            </div>
+
+            <div class="mock-verified">✅ All reviews from verified repair customers</div>
+
+            <div class="mock-divider"></div>
+
+            <div class="mock-data-row">
+              <div class="mock-data-icon" style="background:var(--blue-pale);">🏅</div>
+              <div>
+                <div class="mock-data-label">Certifications</div>
+                <div class="mock-data-val">I-CAR Gold, Honda ProFirst, Toyota Certified</div>
+              </div>
+            </div>
+            <div class="mock-data-row">
+              <div class="mock-data-icon" style="background:var(--green-light, #DCFCE7);">🛡️</div>
+              <div>
+                <div class="mock-data-label">Insurance Relationships</div>
+                <div class="mock-data-val">State Farm DRP · Allstate · Progressive</div>
+              </div>
+            </div>
+            <div class="mock-data-row">
+              <div class="mock-data-icon" style="background:var(--amber-light);">📞</div>
+              <div>
+                <div class="mock-data-label">Contact</div>
+                <div class="mock-data-val">(312) 555-0182 · Book Online</div>
+              </div>
+            </div>
+
+            <div class="mock-source-strip">
+              <span class="mock-source-badge">CCC ONE</span>
+              <span class="mock-source-text">All profile data sourced directly from this shop's CCC ONE system · Updated automatically</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER VALUE -->
+<section id="value" style="background: var(--off-white); border-top: 1px solid var(--border);">
+  <div class="section">
+    <div class="eyebrow">Why Partner With Carwise</div>
+    <h2 class="section-h2">What Carwise Delivers<br>for <em>Insurers</em></h2>
+    <p class="section-lead">Carwise is more than a shop-finder — it's a direct channel to influence where your policyholders take their vehicles, at the exact moment they decide.</p>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <span class="value-icon">🎯</span>
+        <div class="value-title">DRP Shop Visibility at the Moment of Decision</div>
+        <p class="value-body">When policyholders search Carwise after an accident, your preferred shops can be flagged and surfaced prominently — before any competitor's recommendation enters the picture.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">📉</span>
+        <div class="value-title">Reduced Claims Friction</div>
+        <p class="value-body">Policyholders who choose a carrier-preferred shop require less adjuster intervention. Carwise helps route drivers to your DRP network earlier and more naturally, reducing leakage.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">💬</span>
+        <div class="value-title">Verified Quality Signals</div>
+        <p class="value-body">Carwise reviews are collected only from drivers who completed a real repair — giving your policyholders credible quality signals to act on, and giving you insight into network performance.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">🔗</span>
+        <div class="value-title">Seamless Integration with Your Claims Workflow</div>
+        <p class="value-body">Carwise can be surfaced within your claims portal, IVR, mobile app, or claims communication emails — putting shop search exactly where your customers are already looking.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">📊</span>
+        <div class="value-title">Network Analytics & Performance Data</div>
+        <p class="value-body">Understand how your DRP shops are performing on Carwise — ratings, review volume, consumer engagement — and use that insight to strengthen your preferred network.</p>
+      </div>
+      <div class="value-card">
+        <span class="value-icon">🏗️</span>
+        <div class="value-title">Built on CCC's Industry Infrastructure</div>
+        <p class="value-body">Carwise is part of the CCC Intelligent Solutions ecosystem — the same platform your DRP shops already use daily. The data reliability you depend on for claims extends naturally into the consumer channel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="section" style="padding-top: 72px; padding-bottom: 72px;">
+    <div class="eyebrow">Common Questions</div>
+    <h2 class="section-h2" style="margin-bottom:48px;">Frequently Asked<br><em>Questions</em></h2>
+
+    <div style="max-width: 800px;">
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can any body shop create a Carwise listing?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">No. A shop must be an active CCC ONE customer and must explicitly enable the Carwise integration within their CCC ONE settings. Carwise is not an open public directory — it is a curated network of CCC ONE-verified shops that have opted in to be listed.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Where does the shop profile data come from?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">All shop profile data — name, address, phone number, hours of operation, certifications, and insurance relationships — is pulled directly from the shop's active CCC ONE account. Shops do not manually populate their own Carwise profiles. Data syncs automatically, so it remains current as the shop updates their own CCC ONE system.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            How are reviews collected and verified?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Review invitations are triggered automatically when a repair is marked complete in CCC ONE. Only the vehicle owner associated with that completed repair job receives a review invitation. Anonymous or unsolicited public reviews are not accepted. This means every review on Carwise is tied to a real, completed repair — eliminating fake reviews and competitive manipulation.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            How can our preferred shops be highlighted to our policyholders on Carwise?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Through a formal carrier partnership with Carwise, your DRP or preferred network shops can be badged and prioritized in consumer search results when a policyholder selects your carrier. This allows policyholders who identify themselves as your customers to immediately see which shops you work with — matching your network to consumer intent at the exact moment of shop selection.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Can Carwise be embedded in our claims portal or mobile app?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Yes. Carwise offers integration options that allow carriers to surface shop-search functionality directly within their own claims experience — through APIs, embedded widgets, or co-branded landing pages. This allows you to keep your policyholders in your ecosystem while giving them access to the Carwise shop network.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Is Carwise available nationwide?
+            <span class="faq-chevron">⌄</span>
+          </div>
+          <div class="faq-a">Yes. Carwise has coverage across all 50 US states, with shops in virtually every major metro area and most secondary markets. The network reflects the national footprint of CCC ONE-enabled shops that have opted in — a coverage area that continues to grow as more shops activate the Carwise integration.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="cta-inner">
+    <h2>Ready to Put <em>Carwise</em><br>to Work for Your Policyholders?</h2>
+    <p>Let's talk about how Carwise can surface your preferred network to drivers at the exact moment they need a shop — with data you can trust, powered by CCC ONE.</p>
+    <div class="cta-buttons">
+      <button class="btn-cta-main">Request a Partnership Meeting →</button>
+      <button class="btn-cta-ghost">Download Partner Overview</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;">🔵</div>
+    Carwise
+  </div>
+  <div class="footer-note">A CCC Intelligent Solutions Product · carwise.com · © 2025 CCC Intelligent Solutions Inc.</div>
+</footer>
+
+<script>
+  function toggleFaq(el) {
+    const answer = el.nextElementSibling;
+    const isOpen = el.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    // Open clicked if it was closed
+    if (!isOpen) {
+      el.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
+
+  // Smooth scroll offset for fixed nav
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

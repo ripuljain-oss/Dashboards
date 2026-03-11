@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carwise Redesign — Prototype Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-hover: #21253a;
+      --border: #2a2d3e;
+      --text: #e8eaf0;
+      --text-muted: #8b8fa8;
+      --text-dim: #555872;
+      --accent: #6c63ff;
+
+      --cat-b2c: #10b981;
+      --cat-b2c-bg: rgba(16, 185, 129, 0.1);
+      --cat-b2b: #3b82f6;
+      --cat-b2b-bg: rgba(59, 130, 246, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 24px 80px;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.15s;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      width: fit-content;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-arrow { font-size: 15px; }
+
+    /* Header */
+    .header {
+      max-width: 960px;
+      margin: 0 auto 56px;
+    }
+    .collection-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .collection-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #a78bfa;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 560px;
+    }
+    .header-meta {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      gap: 16px;
+    }
+
+    /* Section */
+    .section {
+      max-width: 960px;
+      margin: 0 auto 48px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      background: var(--surface-hover);
+      border-color: #3a3d55;
+      transform: translateY(-2px);
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .cat-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .arrow-icon {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-top: 1px;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .card:hover .arrow-icon {
+      color: var(--text-muted);
+      transform: translate(2px, -2px);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .card-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .badge-b2c { background: var(--cat-b2c-bg); color: var(--cat-b2c); }
+    .badge-b2b { background: var(--cat-b2b-bg); color: var(--cat-b2b); }
+
+    /* Hero card (featured) */
+    .card-featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 28px;
+      background: linear-gradient(135deg, rgba(108,99,255,0.08) 0%, rgba(139,92,246,0.05) 100%);
+      border-color: rgba(108, 99, 255, 0.2);
+    }
+    .card-featured:hover {
+      background: linear-gradient(135deg, rgba(108,99,255,0.14) 0%, rgba(139,92,246,0.1) 100%);
+      border-color: rgba(108, 99, 255, 0.35);
+    }
+    .featured-body { flex: 1; }
+    .featured-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 8px;
+    }
+    .featured-body .card-title { font-size: 17px; margin-bottom: 6px; }
+    .featured-icon { font-size: 36px; flex-shrink: 0; }
+
+    /* Footer */
+    .footer {
+      max-width: 960px;
+      margin: 64px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../index.html" class="back-link">
+    <span class="back-arrow">←</span> All Prototypes
+  </a>
+
+  <header class="header">
+    <div class="collection-label">Collection</div>
+    <h1>Carwise Redesign</h1>
+    <p class="subtitle">Brand and UX explorations for the Carwise platform — covering the consumer experience, insurance partner relationships, and shop owner acquisition.</p>
+    <div class="header-meta">
+      <span>3 prototypes</span>
+      <span>·</span>
+      <span>Last updated Feb 18</span>
+    </div>
+  </header>
+
+  <!-- Consumer -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-title">Consumer</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid">
+
+      <a href="carwise-redesign_v2.html" class="card card-featured">
+        <span class="featured-icon">🏠</span>
+        <div class="featured-body">
+          <div class="featured-label">Featured · B2C</div>
+          <div class="card-title">Carwise Consumer Landing — v2</div>
+          <div class="card-desc">The core Carwise consumer experience: shop finder with tabbed search, trust indicators, verified reviews, and a 3-step claim decision guide. Primary brand expression.</div>
+          <div class="card-meta">Updated Feb 18</div>
+        </div>
+        <span class="arrow-icon" style="font-size:18px;">↗</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- B2B -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-title">Business (B2B)</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="grid">
+
+      <a href="carwise-shop-owners.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-b2b">B2B · Shops</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">Shop Owners Page</div>
+        <div class="card-desc">Dark-themed acquisition page for auto body shop owners — growth metrics, dashboard preview, ROI stats, and how-it-works flow.</div>
+        <div class="card-meta">Updated Feb 18</div>
+      </a>
+
+      <a href="carwise-insurance-partners.html" class="card">
+        <div class="card-top">
+          <span class="cat-badge badge-b2b">B2B · Insurance</span>
+          <span class="arrow-icon">↗</span>
+        </div>
+        <div class="card-title">Insurance Partners Page</div>
+        <div class="card-desc">Partner pitch page for insurance companies — problem/solution framing, integration details, case study, pricing signals, and partner logos.</div>
+        <div class="card-meta">Updated Feb 18</div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Carwise Redesign Collection</span>
+    <a href="../index.html" style="color: var(--text-dim); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#8b8fa8'" onmouseout="this.style.color='#555872'">← Back to all prototypes</a>
+  </footer>
+
+</body>
+</html>
