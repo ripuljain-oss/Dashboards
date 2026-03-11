@@ -635,6 +635,273 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
 
+  /* ── VIDEO TILE ── */
+  .media-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .media-tab {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--gray-200);
+    background: transparent;
+    color: var(--gray-500);
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .media-tab.active {
+    background: var(--ccc-blue);
+    border-color: var(--ccc-blue);
+    color: white;
+  }
+  .video-tile {
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--gray-900);
+    position: relative;
+    cursor: pointer;
+  }
+  .video-tile:hover .video-play { transform: scale(1.1); }
+  .video-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: transform 0.2s;
+  }
+  .video-play-btn {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .video-play-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.4px;
+    text-align: center;
+  }
+  .video-duration {
+    position: absolute;
+    bottom: 6px; right: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    background: rgba(0,0,0,0.55);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .media-panel { display: none; }
+  .media-panel.active { display: block; }
+
+  /* ── AI CHAT ── */
+  .ai-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ai-avatar {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #0071CE, #005BA6);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .ai-chat-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+  .ai-online-dot {
+    width: 7px; height: 7px;
+    background: var(--ccc-green);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+    animation: blink 2s infinite;
+  }
+  .ai-status { font-size: 11px; color: var(--gray-500); display: flex; align-items: center; }
+  .ai-chat-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #0071CE, #7C3AED);
+    color: white;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .chat-window {
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 4px 0;
+  }
+  .chat-msg {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: flex-end;
+  }
+  .chat-msg.user-msg { flex-direction: row-reverse; }
+  .chat-msg-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0071CE, #005BA6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .chat-msg.user-msg .chat-msg-avatar {
+    background: var(--gray-200);
+    font-size: 13px;
+  }
+  .chat-bubble {
+    max-width: 78%;
+    padding: 9px 13px;
+    border-radius: 16px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .chat-msg .chat-bubble {
+    background: var(--gray-100);
+    color: var(--gray-800);
+    border-bottom-left-radius: 4px;
+  }
+  .chat-msg.user-msg .chat-bubble {
+    background: var(--ccc-blue);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-time { font-size: 10px; color: var(--gray-400); margin-bottom: 2px; align-self: flex-end; }
+  .typing-indicator {
+    display: none;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .typing-indicator.visible { display: flex; }
+  .typing-dots {
+    background: var(--gray-100);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .typing-dots span {
+    width: 6px; height: 6px;
+    background: var(--gray-400);
+    border-radius: 50%;
+    animation: typingBounce 1.2s ease-in-out infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
+  .chat-quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 12px;
+  }
+  .quick-reply {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--ccc-blue);
+    color: var(--ccc-blue);
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .quick-reply:hover { background: var(--ccc-blue-light); }
+
+  /* ── GOOGLE REVIEW CARD ── */
+  .google-review-card {
+    background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+    border: 1.5px solid #e8eaf0;
+  }
+  .google-review-card .card-body {
+    text-align: center;
+    padding: 24px 20px;
+  }
+  .google-stars-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 12px 0 8px;
+  }
+  .google-star {
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.15s;
+    filter: grayscale(1);
+    opacity: 0.35;
+  }
+  .google-star.lit { filter: none; opacity: 1; }
+  .google-star:hover { transform: scale(1.2); }
+  .google-review-tagline {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+    letter-spacing: -0.2px;
+  }
+  .google-review-sub {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .google-review-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 10px;
+    background: white;
+    border: 1.5px solid #dadce0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3c4043;
+    cursor: pointer;
+    font-family: inherit;
+    transition: box-shadow 0.15s, background 0.15s;
+    text-decoration: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .google-review-btn:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    background: #f8f9fa;
+    text-decoration: none;
+  }
+  .google-g {
+    font-size: 18px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #4285F4 0%, #EA4335 40%, #FBBC04 70%, #34A853 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .review-count-note {
+    font-size: 11px;
+    color: var(--gray-400);
+    margin-top: 10px;
+  }
+
   /* ── EXPLAIN BUTTON ── */
   .explain-btn {
     display: flex;
@@ -937,71 +1204,149 @@
       </div>
     </div>
 
-    <!-- Notification Opt-in -->
-    <div class="card notify-card">
+    <!-- Photo & Video Gallery -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Repair Photos &amp; Videos</span>
+        <span style="font-size:12px; color:var(--ccc-blue); cursor:pointer; font-weight:600;">View all (8) →</span>
+      </div>
       <div class="card-body">
-        <div class="notify-icon">📱</div>
-        <div class="notify-text">
-          <h3>Get instant status updates</h3>
-          <p>We'll text you as soon as anything changes</p>
+        <div class="media-tabs">
+          <button class="media-tab active" onclick="switchMedia('photos', this)">📸 Photos (5)</button>
+          <button class="media-tab" onclick="switchMedia('videos', this)">▶ Videos (3)</button>
         </div>
-        <button class="notify-btn" onclick="this.textContent='✓ Subscribed'">Enable SMS</button>
+
+        <!-- Photos Panel -->
+        <div id="media-photos" class="media-panel active">
+          <div class="photo-grid">
+            <div class="photo-tile">
+              <div class="photo-placeholder"><span>📸</span>Before</div>
+              <div class="photo-label">BEFORE</div>
+            </div>
+            <div class="photo-tile">
+              <div class="photo-placeholder"><span>🔧</span>Disassembly</div>
+              <div class="photo-label">DAY 1</div>
+            </div>
+            <div class="photo-tile">
+              <div class="photo-placeholder"><span>🔩</span>Frame Work</div>
+              <div class="photo-label">IN PROGRESS</div>
+            </div>
+            <div class="photo-tile">
+              <div class="photo-placeholder"><span>🎨</span>Paint</div>
+              <div class="photo-label">PAINT</div>
+            </div>
+            <div class="photo-tile">
+              <div class="photo-placeholder"><span>✨</span>After</div>
+              <div class="photo-label">AFTER</div>
+            </div>
+            <div class="photo-tile" style="background:var(--gray-900); display:flex; align-items:center; justify-content:center; cursor:pointer;">
+              <div style="text-align:center; color:white;">
+                <div style="font-size:20px; font-weight:700;">+3</div>
+                <div style="font-size:10px; opacity:0.7; margin-top:3px;">more photos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Videos Panel -->
+        <div id="media-videos" class="media-panel">
+          <div class="photo-grid">
+            <div class="video-tile">
+              <div class="video-play">
+                <div class="video-play-btn">▶</div>
+                <div class="video-play-label">FRAME ALIGNMENT</div>
+              </div>
+              <div class="video-duration">0:42</div>
+            </div>
+            <div class="video-tile">
+              <div class="video-play">
+                <div class="video-play-btn">▶</div>
+                <div class="video-play-label">PAINT BOOTH</div>
+              </div>
+              <div class="video-duration">1:05</div>
+            </div>
+            <div class="video-tile">
+              <div class="video-play">
+                <div class="video-play-btn">▶</div>
+                <div class="video-play-label">FINAL WALKTHROUGH</div>
+              </div>
+              <div class="video-duration">2:18</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Photo Gallery -->
+    <!-- AI Chat Assistant -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">Repair Photos</span>
-        <span style="font-size:12px; color:var(--ccc-blue); cursor:pointer; font-weight:600;">View all →</span>
-      </div>
-      <div class="card-body">
-        <div class="photo-grid">
-          <div class="photo-tile">
-            <div class="photo-placeholder"><span>📸</span>Before</div>
-            <div class="photo-label">BEFORE</div>
+        <div class="ai-chat-header" style="width:100%;">
+          <div class="ai-avatar">✦</div>
+          <div>
+            <div class="ai-chat-name">Repair Assistant</div>
+            <div class="ai-status"><span class="ai-online-dot"></span>Online · Expert Collision</div>
           </div>
-          <div class="photo-tile">
-            <div class="photo-placeholder"><span>🔧</span>In Progress</div>
-            <div class="photo-label">IN PROGRESS</div>
-          </div>
-          <div class="photo-tile">
-            <div class="photo-placeholder"><span>✨</span>After</div>
-            <div class="photo-label">AFTER</div>
-          </div>
+          <span class="ai-chat-badge">AI</span>
         </div>
       </div>
-    </div>
+      <div class="card-body" style="padding-top:14px;">
+        <div class="chat-window" id="chatWindow">
+          <div class="chat-msg">
+            <div class="chat-msg-avatar">✦</div>
+            <div>
+              <div class="chat-bubble">Hi! I'm your Repair Assistant for Expert Collision. Your <strong>2021 Honda Accord</strong> is ready for pickup today! 🎉</div>
+              <div class="chat-time" style="margin-top:4px; padding-left:4px;">3:22 PM</div>
+            </div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-msg-avatar">✦</div>
+            <div>
+              <div class="chat-bubble">I can help you with questions about your repair, the estimate, pickup hours, payment, or anything else. What can I help with?</div>
+            </div>
+          </div>
+        </div>
 
-    <!-- Message Thread -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Messages</span>
-        <span style="font-size:12px; color:var(--gray-500);">Expert Collision · Maria R.</span>
-      </div>
-      <div class="card-body">
-        <div class="message-thread">
-          <div class="msg">
-            <div class="msg-bubble">Hi! Just dropping off my Accord — rear bumper damage from last week.</div>
-            <div class="msg-time">Feb 26</div>
-          </div>
-          <div class="msg from-shop">
-            <div class="msg-bubble">Welcome! We've got everything checked in. We'll start the assessment tomorrow morning.</div>
-            <div class="msg-time">Feb 26</div>
-          </div>
-          <div class="msg from-shop">
-            <div class="msg-bubble">Parts have arrived. Body work is underway — looking good so far! 👍</div>
-            <div class="msg-time">Mar 2</div>
-          </div>
-          <div class="msg from-shop">
-            <div class="msg-bubble">Great news — your vehicle has passed final QC and is ready for pickup today!</div>
-            <div class="msg-time">Today 3:20pm</div>
+        <!-- Quick Replies -->
+        <div class="chat-quick-replies" id="quickReplies">
+          <button class="quick-reply" onclick="sendQuick(this, 'When can I pick up my car?')">🕐 Pickup hours?</button>
+          <button class="quick-reply" onclick="sendQuick(this, 'Can you explain my estimate?')">💰 About my estimate</button>
+          <button class="quick-reply" onclick="sendQuick(this, 'What was the main damage repaired?')">🔧 Repair details</button>
+          <button class="quick-reply" onclick="sendQuick(this, 'Is there a warranty on the repairs?')">🛡 Warranty?</button>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" id="typingIndicator">
+          <div class="chat-msg-avatar">✦</div>
+          <div class="typing-dots">
+            <span></span><span></span><span></span>
           </div>
         </div>
+
+        <!-- Input -->
         <div class="msg-input-row">
-          <input class="msg-input" type="text" placeholder="Send a message to the shop…" />
-          <button class="msg-send-btn">➤</button>
+          <input class="msg-input" id="chatInput" type="text" placeholder="Ask about your repair…" onkeydown="if(event.key==='Enter') sendChat()" />
+          <button class="msg-send-btn" onclick="sendChat()">➤</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Google Review -->
+    <div class="card google-review-card">
+      <div class="card-body">
+        <div style="font-size:28px; margin-bottom:8px;">⭐</div>
+        <div class="google-review-tagline">Happy with your repair?</div>
+        <div class="google-review-sub">Your feedback helps Expert Collision and helps other drivers find a great shop.</div>
+        <div class="google-stars-row" id="ratingStars">
+          <span class="google-star" onclick="setRating(1)">★</span>
+          <span class="google-star" onclick="setRating(2)">★</span>
+          <span class="google-star" onclick="setRating(3)">★</span>
+          <span class="google-star" onclick="setRating(4)">★</span>
+          <span class="google-star" onclick="setRating(5)">★</span>
+        </div>
+        <a href="https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4" target="_blank" class="google-review-btn" id="googleReviewBtn">
+          <span class="google-g">G</span> Leave a Google Review
+        </a>
+        <div class="review-count-note">Join 312 customers who've reviewed Expert Collision</div>
       </div>
     </div>
 
@@ -1164,79 +1509,134 @@
 </div>
 
 <script>
-  const ESTIMATE = {
-    vehicle: "2021 Honda Accord (Silver)",
-    items: [
-      { name: "Rear Bumper Replacement", amount: 1240 },
-      { name: "Frame Alignment", amount: 380 },
-      { name: "Paint & Blend", amount: 620 }
-    ],
-    insuranceCovers: 1740,
-    deductible: 500
-  };
-
+  /* ── ESTIMATE EXPLANATION ── */
   function openExplainModal() {
     const modal = document.getElementById('explainModal');
     modal.classList.add('open');
     document.getElementById('explainLoading').style.display = 'flex';
     document.getElementById('explainContent').style.display = 'none';
-    fetchExplanation();
+    setTimeout(showExplanation, 1400);
   }
 
   function closeExplainModal() {
     document.getElementById('explainModal').classList.remove('open');
   }
 
-  async function fetchExplanation() {
-    const prompt = `You are a friendly, plain-language auto repair advisor helping a car owner understand their collision repair estimate.
+  function showExplanation() {
+    document.getElementById('explainLoading').style.display = 'none';
+    const content = document.getElementById('explainContent');
+    content.style.display = 'block';
+    content.innerHTML = `
+      <h3>What was repaired</h3>
 
-Here is the repair estimate for a ${ESTIMATE.vehicle}:
-${ESTIMATE.items.map(i => `- ${i.name}: $${i.amount.toLocaleString()}`).join('\n')}
-- Insurance covers: $${ESTIMATE.insuranceCovers.toLocaleString()}
-- Customer deductible (what they owe): $${ESTIMATE.deductible}
+      <div class="line-explain">
+        <div class="line-explain-icon">🚗</div>
+        <div class="line-explain-text">
+          <div class="line-explain-label">Rear Bumper Replacement — $1,240</div>
+          <div class="line-explain-desc">Your rear bumper was too damaged to repair, so the shop replaced it with a brand-new OEM Honda part. This covers the part itself (~$480) plus about 6 hours of labor to remove the old bumper, install the new one, and fit all the sensors and trim pieces back in perfectly.</div>
+        </div>
+      </div>
 
-Explain this estimate in plain, friendly language. Help the customer understand:
-1. What each repair line item actually means in simple terms (what the technician physically did/replaced)
-2. Why each item costs what it does (labor, parts, complexity)
-3. Whether these costs are fair and typical
-4. What their insurance covered and why they owe $${ESTIMATE.deductible}
+      <div class="line-explain">
+        <div class="line-explain-icon">🔩</div>
+        <div class="line-explain-text">
+          <div class="line-explain-label">Frame Alignment — $380</div>
+          <div class="line-explain-desc">Even though your bumper took most of the hit, the underlying frame was slightly bent — which affects how your car drives and how safe it is in future impacts. The shop used a computerized frame machine to pull it back to Honda's exact factory spec. This is critical safety work, not optional.</div>
+        </div>
+      </div>
 
-Format your response as structured HTML using ONLY these elements:
-- <h3> for section headers (one per line item, plus a "Bottom Line" section)
-- <div class="line-explain"><div class="line-explain-icon">[emoji]</div><div class="line-explain-text"><div class="line-explain-label">[item name & price]</div><div class="line-explain-desc">[explanation]</div></div></div> for each line item
-- <div class="summary-box"> for the final summary about insurance and deductible
+      <div class="line-explain">
+        <div class="line-explain-icon">🎨</div>
+        <div class="line-explain-text">
+          <div class="line-explain-label">Paint &amp; Color Blend — $620</div>
+          <div class="line-explain-desc">A new bumper needs to be painted to match your car's Silver finish — and a good paint job includes "blending" onto the adjacent panels so there's no visible color difference. This is one of the more time-intensive steps: sanding, priming, base coat, clear coat, and curing in a temperature-controlled booth.</div>
+        </div>
+      </div>
 
-Keep the tone warm and reassuring. No jargon. Max 2 sentences per line item explanation. End with a reassuring note about the value of the repair.`;
+      <h3>Your insurance &amp; what you owe</h3>
 
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
-
-      const data = await response.json();
-      const html = data.content?.[0]?.text || '';
-
-      document.getElementById('explainLoading').style.display = 'none';
-      const content = document.getElementById('explainContent');
-      content.style.display = 'block';
-      content.innerHTML = html;
-    } catch (err) {
-      document.getElementById('explainLoading').style.display = 'none';
-      const content = document.getElementById('explainContent');
-      content.style.display = 'block';
-      content.innerHTML = `<div class="explain-error">
-        <p>⚠️ Couldn't load the explanation right now. Please try again or ask your service advisor, Maria, to walk you through the estimate.</p>
-      </div>`;
-    }
+      <div class="summary-box">
+        <strong>Total repair cost: $2,240.</strong> Your insurance covered $1,740 — that's everything except your deductible. The <strong>$500 you owe</strong> is simply your deductible, which is the amount you agreed to pay out-of-pocket when you set up your policy. Your insurer handled the rest directly with the shop.<br><br>
+        These are fair, typical prices for this type of repair in the Houston area. Expert Collision uses OEM Honda parts and certified technicians, which is why your repair comes with a lifetime warranty. 👍
+      </div>
+    `;
   }
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeExplainModal(); });
+
+  /* ── MEDIA TABS ── */
+  function switchMedia(panel, btn) {
+    document.querySelectorAll('.media-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.media-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('media-' + panel).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ── AI CHAT ── */
+  const AI_RESPONSES = {
+    pickup: "You can pick up your 2021 Honda Accord today! The shop is open <strong>Mon–Fri 8:00 AM – 5:00 PM</strong> at 3501 BF Terry Blvd, Rosenberg TX. Just bring a valid ID and your payment — your deductible is $500. Maria can have your keys ready in minutes. 🔑",
+    hours: "Expert Collision is open <strong>Monday through Friday, 8:00 AM to 5:00 PM</strong>. They're closed on weekends. Give them a call at (281) 342-1809 if you need to arrange a specific pickup time.",
+    estimate: "Your total repair was <strong>$2,240</strong>. That breaks down as: Rear Bumper Replacement ($1,240) + Frame Alignment ($380) + Paint & Blend ($620). Your insurance covered $1,740, leaving your <strong>$500 deductible</strong> as what you owe. Click \"Explain this Estimate\" in the cost summary below for a full plain-language breakdown!",
+    pay: "You can pay your <strong>$500 deductible</strong> right from this page — we accept credit/debit card, Apple Pay, and Google Pay. If you need help with the deductible, you can apply for Sunbit financing in about 30 seconds. Just tap \"Pay Deductible Now\" in the sidebar.",
+    damage: "Your Accord had rear collision damage. The shop replaced the entire rear bumper assembly, corrected a slight frame alignment issue (important for safety and driving straight), and then painted and blended the new bumper to match your factory Silver finish. Everything passed final quality control today — the car looks great! ✨",
+    warranty: "Expert Collision offers a <strong>Lifetime Warranty</strong> on all repairs for as long as you own the vehicle. That covers workmanship and parts. If anything related to this repair ever looks wrong, just bring it back and they'll make it right at no charge.",
+    status: "Your repair is <strong>100% complete</strong>! It passed final QC and detailing this afternoon at 3:20 PM. The only step left is pickup — your car is clean, aligned, and ready to go. 🎉",
+    default: "Great question! For anything specific, your service advisor <strong>Maria Rodriguez</strong> is the best person to help — you can reach her at (281) 342-1809 ext. 2. Is there anything else I can look up for you about your repair, estimate, or pickup?"
+  };
+
+  function getAIResponse(text) {
+    const t = text.toLowerCase();
+    if (/pick.?up|pickup|get my car|come get|retrieve/.test(t)) return AI_RESPONSES.pickup;
+    if (/hour|open|close|time|when/.test(t)) return AI_RESPONSES.hours;
+    if (/estimat|cost|price|charge|bill|breakdown|explain/.test(t)) return AI_RESPONSES.estimate;
+    if (/pay|payment|deductible|finance|sunbit|money/.test(t)) return AI_RESPONSES.pay;
+    if (/damage|repair|what.*fix|what.*done|bumper|frame|paint/.test(t)) return AI_RESPONSES.damage;
+    if (/warrant|guarant/.test(t)) return AI_RESPONSES.warranty;
+    if (/status|progress|done|finish|complet|ready/.test(t)) return AI_RESPONSES.status;
+    return AI_RESPONSES.default;
+  }
+
+  function appendMessage(text, isUser) {
+    const window = document.getElementById('chatWindow');
+    const div = document.createElement('div');
+    div.className = 'chat-msg' + (isUser ? ' user-msg' : '');
+    div.innerHTML = `
+      <div class="chat-msg-avatar">${isUser ? '👤' : '✦'}</div>
+      <div class="chat-bubble">${text}</div>
+    `;
+    window.appendChild(div);
+    window.scrollTop = window.scrollHeight;
+  }
+
+  function sendChat() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+
+    document.getElementById('quickReplies').style.display = 'none';
+    appendMessage(text, true);
+
+    const indicator = document.getElementById('typingIndicator');
+    indicator.classList.add('visible');
+    document.getElementById('chatWindow').scrollTop = document.getElementById('chatWindow').scrollHeight;
+
+    setTimeout(() => {
+      indicator.classList.remove('visible');
+      appendMessage(getAIResponse(text), false);
+    }, 900 + Math.random() * 600);
+  }
+
+  function sendQuick(btn, text) {
+    document.getElementById('chatInput').value = text;
+    sendChat();
+  }
+
+  /* ── GOOGLE STAR RATING ── */
+  function setRating(n) {
+    const stars = document.querySelectorAll('.google-star');
+    stars.forEach((s, i) => s.classList.toggle('lit', i < n));
+  }
 </script>
 </body>
 </html>
