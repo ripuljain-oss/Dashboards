@@ -21,6 +21,10 @@
     --time: #0891b2; --time-bg: #e0f5f9;
     --multi: #7c3aed; --multi-bg: #f3f0fd;
     --feedback: #d97706; --feedback-bg: #fef3e2;
+    --sms-bg: #f0fdf4;
+    --sms-border: #86efac;
+    --sms-text: #166534;
+    --sms-label: #15803d;
   }
   body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
   .topbar { background: var(--ccc-blue); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
@@ -38,7 +42,7 @@
   .chip-time { background: var(--time-bg); color: var(--time); }
   .chip-multi { background: var(--multi-bg); color: var(--multi); }
   .chip-feedback { background: var(--feedback-bg); color: var(--feedback); }
-  .content { max-width: 840px; margin: 32px auto 0; padding: 0 40px; }
+  .content { max-width: 860px; margin: 32px auto 0; padding: 0 40px; }
   .section-group { margin-bottom: 36px; }
   .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
   .section-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -73,13 +77,21 @@
   .usecase-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
   .usecase-pill { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); font-size: 11px; font-weight: 500; color: var(--text-sub); }
   .uc-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .progress-wrap { margin: 7px 0 3px; }
+  .progress-wrap { margin: 7px 0 6px; }
   .progress-track { height: 5px; background: var(--border-light); border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
   .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--time), rgba(8,145,178,0.3)); animation: growBar 0.8s ease both 0.3s; }
   .progress-legend { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); font-weight: 500; }
   .progress-pct { color: var(--time); font-weight: 600; }
   .trigger-line { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); margin-top: 5px; flex-wrap: wrap; }
   .trigger-label { font-weight: 600; color: var(--text-muted); }
+
+  /* SMS bubble */
+  .sms-block { margin-top: 10px; background: var(--sms-bg); border: 1px solid var(--sms-border); border-radius: 8px; padding: 10px 13px; }
+  .sms-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--sms-label); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+  .sms-label::before { content: ''; display: inline-block; width: 7px; height: 7px; background: var(--sms-label); border-radius: 50%; }
+  .sms-text { font-size: 12.5px; color: var(--sms-text); line-height: 1.6; font-family: 'Inter', sans-serif; }
+  .sms-var { background: rgba(21,128,61,0.12); color: #14532d; border-radius: 3px; padding: 0 3px; font-size: 11.5px; font-weight: 500; }
+
   .connector { display: flex; align-items: center; justify-content: center; height: 30px; margin: 3px 0; padding-left: 56px; }
   .connector-line { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px); }
   .connector-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); padding: 0 12px; white-space: nowrap; }
@@ -144,7 +156,11 @@
             <div class="usecase-pill"><div class="uc-dot" style="background:#0891b2;"></div>Photo estimate &nbsp;→&nbsp; sent at estimate submission</div>
             <div class="usecase-pill"><div class="uc-dot" style="background:#7c3aed;"></div>Standard RO &nbsp;→&nbsp; sent when vehicle is dropped off</div>
           </div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Status: <span class="sms-var">[Customer First Name]</span>, <span class="sms-var">[Repair Facility Name]</span> will be sending you repair status updates and a survey. Msg/data rates may apply. Reply "STOP" to cancel.</div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Varies by workflow — appointment, photo estimate, or vehicle-in event
           </div>
         </div>
@@ -159,7 +175,11 @@
             <span class="badge badge-shop">Shop-triggered</span>
           </div>
           <div class="card-desc">Confirms the vehicle has been received at the facility and repair work is beginning. Provides reassurance and sets the repair in motion for the customer.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: Thank you <span class="sms-var">[Customer First Name]</span> for allowing <span class="sms-var">[Repair Facility Name]</span> to service your <span class="sms-var">[Vehicle Make]</span>. We will provide you with an updated status soon. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Shop marks vehicle as checked in / dropped off in CCC ONE
           </div>
         </div>
@@ -185,6 +205,10 @@
             <div class="progress-track"><div class="progress-fill" style="--w:24%;"></div></div>
             <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 24% elapsed</span><span>Promise date</span></div>
           </div>
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: Hi <span class="sms-var">[Customer First Name]</span>, your <span class="sms-var">[Vehicle Make]</span> repair is underway! We look forward to seeing you in about <span class="sms-var">[Days Remaining]</span> days. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
+          </div>
         </div>
       </div>
 
@@ -200,6 +224,10 @@
           <div class="progress-wrap">
             <div class="progress-track"><div class="progress-fill" style="--w:49%;"></div></div>
             <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 49% elapsed</span><span>Promise date</span></div>
+          </div>
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: <span class="sms-var">[Customer First Name]</span>, the repair on your <span class="sms-var">[Vehicle Make]</span> is underway. Your vehicle is on track to be completed on <span class="sms-var">[Date Promised as MM/DD]</span>. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
           </div>
         </div>
       </div>
@@ -217,6 +245,10 @@
             <div class="progress-track"><div class="progress-fill" style="--w:60%;"></div></div>
             <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 60% elapsed</span><span>Promise date</span></div>
           </div>
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: We are over the halfway mark! Your <span class="sms-var">[Vehicle Make]</span> is still on target for <span class="sms-var">[Date Promised as MM/DD]</span>. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
+          </div>
         </div>
       </div>
 
@@ -233,6 +265,10 @@
             <div class="progress-track"><div class="progress-fill" style="--w:72%;"></div></div>
             <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 72% elapsed</span><span>Promise date</span></div>
           </div>
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: We are on track <span class="sms-var">[Customer First Name]</span>, for <span class="sms-var">[Date Promised as MM/DD/YYYY]</span>. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
+          </div>
         </div>
       </div>
 
@@ -248,6 +284,10 @@
           <div class="progress-wrap">
             <div class="progress-track"><div class="progress-fill" style="--w:87%;"></div></div>
             <div class="progress-legend"><span>Vehicle-in</span><span class="progress-pct">≈ 87% elapsed</span><span>Promise date</span></div>
+          </div>
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: Hi <span class="sms-var">[Customer First Name]</span>. We are nearing completion. If we encounter any delays, we'll call you. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
           </div>
         </div>
       </div>
@@ -268,7 +308,11 @@
             <span class="badge badge-shop">Shop-triggered</span>
           </div>
           <div class="card-desc">Notifies the customer that repairs are finished and the vehicle is ready for pickup. Typically the most anticipated message in the entire sequence.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: Your <span class="sms-var">[Vehicle Make]</span> is all fixed and ready to come home! We will call you soon if we haven't already, to arrange pick up. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel.</div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Shop marks repair as complete in CCC ONE
           </div>
         </div>
@@ -283,7 +327,11 @@
             <span class="badge badge-shop">Shop-triggered</span>
           </div>
           <div class="card-desc">Confirms the vehicle has been returned to the customer. Closes the active repair loop and initiates the post-delivery feedback sequence.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: <span class="sms-var">[Customer First Name]</span>, confirming that you picked up your vehicle today. We enjoyed working with you. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel.</div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Shop marks vehicle as delivered / out in CCC ONE
           </div>
         </div>
@@ -298,7 +346,11 @@
             <span class="badge badge-shop">Shop-triggered</span>
           </div>
           <div class="card-desc">Sent whenever the shop changes the estimated completion date in CCC ONE. Critical for proactive expectation management — prevents customer frustration from unannounced schedule changes.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Update: Hi <span class="sms-var">[Customer First Name]</span>. We have updated your estimated completion date from <span class="sms-var">[oldPromiseDate as MM/DD/YYYY]</span> to <span class="sms-var">[newPromiseDate as MM/DD/YYYY]</span>. <span class="sms-var">[Repair Facility Name]</span>. Reply "STOP" to cancel. <span class="sms-var">[Carwise URL]</span></div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Shop modifies the promise / delivery date in CCC ONE &nbsp;·&nbsp;
             <span class="warn-text">⚠ Recalculates all time-based message windows</span>
           </div>
@@ -329,7 +381,11 @@
             <span class="badge badge-feedback">Post-delivery</span>
           </div>
           <div class="card-desc">General repair experience survey capturing overall customer satisfaction. Provides the shop with actionable quality feedback across all repair orders.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Thank you for trusting <span class="sms-var">[Repair Facility Name]</span> to repair your <span class="sms-var">[Vehicle Make]</span>. Please answer one question about your satisfaction. <span class="sms-var">[Survey Link]</span></div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Auto-sent after vehicle-out event (delayed send) · All ROs
           </div>
         </div>
@@ -344,7 +400,11 @@
             <span class="badge badge-feedback">Post-delivery</span>
           </div>
           <div class="card-desc">Customer Satisfaction Index survey focused on the insurance claim experience. Results feed directly into insurer scorecards and DRP performance metrics for the shop.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Hi <span class="sms-var">[Customer First Name]</span>, <span class="sms-var">[Insurance Company]</span> would like to hear from you about your recent vehicle repair experience at <span class="sms-var">[Repair Facility Name]</span>. <span class="sms-var">[Survey Link]</span> Reply "STOP" to cancel.</div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Auto-sent after vehicle-out · Insurance-related ROs only
           </div>
         </div>
@@ -359,7 +419,11 @@
             <span class="badge badge-feedback">Post-delivery</span>
           </div>
           <div class="card-desc">Shop-specific satisfaction survey measuring repair quality, communication, and overall experience. Helps shops benchmark performance and identify areas for improvement.</div>
-          <div class="trigger-line">
+          <div class="sms-block">
+            <div class="sms-label">SMS Message</div>
+            <div class="sms-text">Hi <span class="sms-var">[Customer First Name]</span>, <span class="sms-var">[Repair Facility Name]</span> would like to hear from you about your recent vehicle repair experience. <span class="sms-var">[Survey Link]</span> Reply "STOP" to cancel.</div>
+          </div>
+          <div class="trigger-line" style="margin-top:8px;">
             <span class="trigger-label">Trigger:</span>&nbsp;Auto-sent after vehicle-out · All ROs
           </div>
         </div>
